@@ -1,0 +1,11 @@
+#page-heading{
+    margin: 5rem 0;
+}
+#page-heading > h1:first-child{
+    margin-bottom: 3rem;
+}
+#donate-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

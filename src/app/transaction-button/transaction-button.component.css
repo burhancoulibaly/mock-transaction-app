@@ -1,0 +1,11 @@
+button.trans-button{
+    width: 500px;
+    height: 175px;
+    color: white;
+    background-color: #ddd;
+    border-style: solid;
+    border-width: 3px;
+    border-color: #ddd;
+    font-size: 45px;
+    font-weight: bold;
+}

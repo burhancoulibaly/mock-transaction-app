@@ -1,0 +1,33 @@
+.transactions{
+    width: 100%;
+}
+.transactions > section{
+    border: 1px solid black;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 3rem;
+}
+.transactions .payment-info{
+    border: 1px solid black;
+    height: 100%;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+}
+.transactions .notes{
+    border: 1px solid black;
+    height: 100%;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+.transactions .payment-info h3{
+    margin: 1rem;
+}
+.transactions .payment-info h1{
+    font-size: 5rem;
+}

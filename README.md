@@ -1,2 +1,2 @@
 # mock-transaction-app
-mock transaction app that will use mysql, graphql, and angular
+mock transaction app that uses mysql, graphql, and angular

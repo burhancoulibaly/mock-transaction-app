@@ -4,13 +4,25 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "prod-server": "NODE_ENV=production node ./backend/server.js",
-    "dev-server": "NODE_ENV=development node ./backend/server.js",
-    "test-server": "NODE_ENV=test node ./backend/server.js",
+    "watch-server": "nodemon --watch ./backend ext js  ./backend/server.js",
+    "prod-server": "NODE_ENV=production npm run watch-server",
+    "dev-server": "NODE_ENV=development npm run watch-server",
+    "test-server": "NODE_ENV=test npm run watch-server",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
+  },
+  "nodemonConfig": {
+    "restartable": "rs",
+    "ignore": [
+      "node_modules/**/node_modules"
+    ],
+    "delay": "2500",
+    "env": {
+      "NODE_ENV": "development",
+      "NODE_CONFIG_DIR": "./config"
+    }
   },
   "private": true,
   "dependencies": {
@@ -22,12 +34,18 @@
     "@angular/platform-browser": "~9.1.9",
     "@angular/platform-browser-dynamic": "~9.1.9",
     "@angular/router": "~9.1.9",
+    "apollo-server-express": "^2.15.0",
+    "at": "^0.1.2",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.5.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "graphql": "^15.1.0",
     "jquery": "^3.5.1",
+    "jsonwebtoken": "^8.5.1",
+    "latest": "^0.2.0",
     "mysql": "^2.18.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",

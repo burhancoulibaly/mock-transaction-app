@@ -12,6 +12,10 @@ import { TransactionButtonComponent } from './transaction-button/transaction-but
 import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { TransactionModalComponent } from './transaction-modal/transaction-modal.component';
+import { GraphQLModule } from './graphql.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
+import { CookieService } from 'ngx-cookie-service'
 
 @NgModule({
   declarations: [
@@ -28,9 +32,18 @@ import { TransactionModalComponent } from './transaction-modal/transaction-modal
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    GraphQLModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

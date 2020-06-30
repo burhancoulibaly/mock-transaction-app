@@ -4,20 +4,20 @@ let tableInstances = {};
 
 class Entity {
     constructor(table) {
-        if(tableInstances[table]){
-            return tableInstances[table];
-        }
+        // if(tableInstances[table]){
+        //     return tableInstances[table];
+        // }
 
         this._entity = table;
         tableInstances[table] = this._entity;
 
         return{
             setEntity(table){
-                if(tableInstances[table]){
-                    delete tableInstances[table];
-                    this._entity = tableInstances[table];
-                    return this._entity;
-                }
+                // if(tableInstances[table]){
+                //     delete tableInstances[table];
+                //     this._entity = tableInstances[table];
+                //     return this._entity;
+                // }
 
                 delete tableInstances[table];
                 this._entity = table;

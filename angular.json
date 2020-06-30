@@ -69,8 +69,14 @@
             "browserTarget": "mock-transaction-app:build"
           },
           "configurations": {
+            "development": {
+              "browserTarget": "mock-transaction-app:build:development"
+            },
             "production": {
               "browserTarget": "mock-transaction-app:build:production"
+            },
+            "test": {
+              "browserTarget": "mock-transaction-app:build:test"
             }
           }
         },

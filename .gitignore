@@ -5,6 +5,7 @@
 .env.development
 .env.test
 .env
+./src/environments
 
 # compiled output
 /dist

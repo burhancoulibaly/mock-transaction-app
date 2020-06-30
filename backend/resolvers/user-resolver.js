@@ -18,6 +18,7 @@ const typeDefs = gql(`
     type LoginResponse {
         response: String!
         accessToken: String!
+        refreshToken: String!
     }
     
     type Mutation {
@@ -29,7 +30,11 @@ const typeDefs = gql(`
 const resolvers = {
     //What the query returns
     Query: {
-        login: async(_, {email, password}, {res}) => {
+        login: async(_, {email, password}, {req, res}) => {
+            // if(!req.payload.authenticated){
+            //     console.log(`${req.payload.error}, logging user in`);
+            // }
+
             try{
                 //check user credentials                
                 let loginInfo = await login.getRow("email", `"${email}"`);
@@ -37,20 +42,28 @@ const resolvers = {
                 if(loginInfo.length == 0 || compareSync(password, loginInfo[0].password.toString()) == false){
                     return {
                         response: `Invalid login information please try again`,
-                        accessToken: ``
+                        accessToken: ``,
+                        refreshToken: ``
                     }
                 };
 
-                res.cookie("jid", createRefreshToken(email),{ httpOnly: true });
-
                 return {
                     response: `Login successful`,
-                    accessToken: createAccessToken(email)
+                    accessToken: createAccessToken(email),
+                    refreshToken: createRefreshToken(email)
                 };
             }catch(err){
                 console.error(err);
                 throw err;
             }
+        },
+        sammysHello: async(_,data,{req}) => {
+            console.log(req.headers);
+            if(!req.payload.authenticated){
+                return `Error: ${req.payload.error}`
+            }
+
+            return "Hello Muthafucka"
         }
     },
     //For when mutations(changes) are made to the database

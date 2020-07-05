@@ -5,9 +5,9 @@
         </a>
     </div>
     <div class="auth">
-        <a href="" (click)="openToggle('login-modal')"><h1>Login</h1></a>
-        <a href="" (click)="openToggle('sign-up-modal')"><h1>Sign Up</h1></a>
-        <a *ngIf="isAuthed" href="" (click)="logOut()"><h1>Logout</h1></a>
+        <button *ngIf="!isAuthed" href="" (click)="openToggle('login-modal')"><h1>Login</h1></button>
+        <button *ngIf="!isAuthed" href="" (click)="openToggle('sign-up-modal')"><h1>Sign Up</h1></button>
+        <button *ngIf="isAuthed" href="" (click)="logOut()"><h1>Logout</h1></button>
     </div>
 </div>
 <modal id="login-modal"></modal>

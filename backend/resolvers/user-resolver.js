@@ -11,14 +11,19 @@ let login = new Entity("login");
 //Mutation Schema
 const typeDefs = gql(`
     type Query {
-        sammysHello: String!
+        sammysHello: Response!
         login(email: String!, password: String!): LoginResponse!
     }
 
     type LoginResponse {
         response: String!
+        email: String!
         accessToken: String!
-        refreshToken: String!
+    }
+
+    type Response {
+        response_type: String!
+        response: String!
     }
     
     type Mutation {
@@ -31,10 +36,6 @@ const resolvers = {
     //What the query returns
     Query: {
         login: async(_, {email, password}, {req, res}) => {
-            // if(!req.payload.authenticated){
-            //     console.log(`${req.payload.error}, logging user in`);
-            // }
-
             try{
                 //check user credentials                
                 let loginInfo = await login.getRow("email", `"${email}"`);
@@ -42,15 +43,22 @@ const resolvers = {
                 if(loginInfo.length == 0 || compareSync(password, loginInfo[0].password.toString()) == false){
                     return {
                         response: `Invalid login information please try again`,
-                        accessToken: ``,
-                        refreshToken: ``
+                        email: ``,
+                        accessToken: ``
                     }
                 };
 
+                res.cookie('jid', createRefreshToken(loginInfo[0].email.toString(), loginInfo[0].token_version.toString()), {
+                    maxAge: 7 * 24 * 60 * 60 * 1000, // 7days 24hours 60minutes 60secs 1000ms
+                    httpOnly: true,
+                    secure: true
+                    
+                });
+
                 return {
                     response: `Login successful`,
-                    accessToken: createAccessToken(email),
-                    refreshToken: createRefreshToken(email)
+                    email: `${loginInfo[0].email.toString()}`,
+                    accessToken: createAccessToken(loginInfo[0].email.toString(), loginInfo[0].token_version.toString())
                 };
             }catch(err){
                 console.error(err);
@@ -60,10 +68,17 @@ const resolvers = {
         sammysHello: async(_,data,{req}) => {
             console.log(req.headers);
             if(!req.payload.authenticated){
-                return `Error: ${req.payload.error}`
+                req.payload.error = req.payload.error.toString().split(":");
+                return {
+                    response_type: `${req.payload.error[0]}`,
+                    response: `${req.payload.error[1]}`
+                }
             }
 
-            return "Hello Muthafucka"
+            return {
+                response_type: "Success",
+                response: "Hello There"
+            }
         }
     },
     //For when mutations(changes) are made to the database

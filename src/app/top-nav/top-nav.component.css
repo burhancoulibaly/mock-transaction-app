@@ -13,11 +13,20 @@
 .menu, .auth{
     display: flex;
 }
-.menu a, .auth a{
+.menu a{
     padding: .5rem;
     border-radius: 8%;
 }
 .menu a.active{
+    background-color: rgb(40, 40, 40);
+}
+.auth button{
+    background-color: inherit;
+    border-style: none;
+    padding: .5rem;
+    border-radius: 8%;
+}
+.auth button:hover{
     background-color: rgb(40, 40, 40);
 }
 

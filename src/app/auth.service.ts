@@ -16,11 +16,13 @@ export class AuthService {
 
   login(email: String, password: String){
     return new Promise((resolve, reject) => {
+            //email: "menz.couli@gmail.com", password: "worldwidmenz"
             this.apollo
               .query({
                 query: gql(`
                   {
-                    login(email: "menz.couli@gmail.com", password: "worldwidmenz"){
+                    login(email: "${email}", password: "${password}"){
+                      response_type,
                       response,
                       email,
                       accessToken
@@ -31,6 +33,14 @@ export class AuthService {
               })
               .subscribe(
                 ({data}: any) =>  { 
+                  if(data.login.response_type == "Error"){
+                    if(data.login.response == "Invalid login"){
+                      return reject("Invalid username or password");
+                    }
+                    
+                    return reject("Unable to log you in at this moment");
+                  }
+
                   this.authStatus = { isLoggedIn: true, email: data.login.email, token: data.login.accessToken };
                   this.authChanged(); 
                   return resolve("Login Successfull");

@@ -29,7 +29,12 @@
 .auth button:hover{
     background-color: rgb(40, 40, 40);
 }
-
+login-modal{
+    width: 100%;
+}
+sign-up-modal{
+    width: 100%;
+}
 
 
 

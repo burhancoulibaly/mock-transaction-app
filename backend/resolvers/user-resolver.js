@@ -16,6 +16,7 @@ const typeDefs = gql(`
     }
 
     type LoginResponse {
+        response_type: String!
         response: String!
         email: String!
         accessToken: String!
@@ -42,7 +43,8 @@ const resolvers = {
                 
                 if(loginInfo.length == 0 || compareSync(password, loginInfo[0].password.toString()) == false){
                     return {
-                        response: `Invalid login information please try again`,
+                        response_type: `Error`,
+                        response: `Invalid login`,
                         email: ``,
                         accessToken: ``
                     }
@@ -56,13 +58,18 @@ const resolvers = {
                 });
 
                 return {
+                    response_type: `Success`,
                     response: `Login successful`,
                     email: `${loginInfo[0].email.toString()}`,
                     accessToken: createAccessToken(loginInfo[0].email.toString(), loginInfo[0].token_version.toString())
                 };
             }catch(err){
-                console.error(err);
-                throw err;
+                return {
+                    response_type: err.toString().split(":")[0].replace(" ",""),
+                    response: err.toString().split(":")[1].replace(" ",""),
+                    email: ``,
+                    accessToken: ``
+                }
             }
         },
         sammysHello: async(_,data,{req}) => {
@@ -70,8 +77,8 @@ const resolvers = {
             if(!req.payload.authenticated){
                 req.payload.error = req.payload.error.toString().split(":");
                 return {
-                    response_type: `${req.payload.error[0]}`,
-                    response: `${req.payload.error[1]}`
+                    response_type: `${req.payload.error[0].replace(" ","")}`,
+                    response: `${req.payload.error[1].replace(" ","")}`
                 }
             }
 

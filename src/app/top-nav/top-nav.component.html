@@ -5,10 +5,14 @@
         </a>
     </div>
     <div class="auth">
-        <button *ngIf="!isAuthed" href="" (click)="openToggle('login-modal')"><h1>Login</h1></button>
-        <button *ngIf="!isAuthed" href="" (click)="openToggle('sign-up-modal')"><h1>Sign Up</h1></button>
-        <button *ngIf="isAuthed" href="" (click)="logOut()"><h1>Logout</h1></button>
+        <button *ngIf="!isAuthed" href="" (click)="openModal('login-modal')"><h1>Login</h1></button>
+        <button *ngIf="!isAuthed" href="" (click)="openModal('sign-up-modal')"><h1>Sign Up</h1></button>
+        <button *ngIf="isAuthed" href="" (click)="logout()"><h1>Logout</h1></button>
     </div>
 </div>
-<modal id="login-modal"></modal>
-<modal id="sign-up-modal"></modal>
+<modal id="login-modal">
+    <login-modal (submit)="login($event)"></login-modal>
+</modal>
+<modal id="sign-up-modal">
+    <sign-up-modal (submit)="signup($event)"></sign-up-modal>
+</modal>

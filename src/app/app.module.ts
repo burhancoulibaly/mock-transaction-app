@@ -15,7 +15,9 @@ import { TransactionModalComponent } from './transaction-modal/transaction-modal
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
-import { CookieService } from 'ngx-cookie-service'
+import { CookieService } from 'ngx-cookie-service';
+import { LoginModalComponent } from './login-modal/login-modal.component';
+import { SignUpModalComponent } from './sign-up-modal/sign-up-modal.component'
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { CookieService } from 'ngx-cookie-service'
     TransactionButtonComponent,
     LoginComponent,
     SignUpComponent,
-    TransactionModalComponent
+    TransactionModalComponent,
+    LoginModalComponent,
+    SignUpModalComponent
   ],
   imports: [
     BrowserModule,

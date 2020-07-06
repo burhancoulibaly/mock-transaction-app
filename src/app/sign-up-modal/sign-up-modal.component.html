@@ -1,0 +1,33 @@
+<h1 class="text-center">Sign Up</h1>
+<form id="signup">
+    <div class="name">
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="name" class="form-control" id="firstName" placeholder="Enter First Name">
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="name" class="form-control" id="lastName" placeholder="Enter Last Name">
+        </div>
+    </div>
+    <div class="form-group">
+      <label for="usernameForm">Username address</label>
+      <input type="username" class="form-control" id="usernameForm" placeholder="Enter Username">
+    </div>
+    <div class="form-group">
+        <label for="signupEmail1">Email address</label>
+        <input type="email" class="form-control" id="signupEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="password">
+        <div class="form-group">
+            <label for="signupPassword">Password</label>
+            <input type="password" class="form-control" id="signupPassword" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Password</label>
+            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm">
+        </div>
+    </div>
+    <button type="submit" (click)="onSubmit($event)" class="btn btn-primary">Submit</button>
+</form>

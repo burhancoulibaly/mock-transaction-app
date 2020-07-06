@@ -35,7 +35,7 @@ const authenticateUser = async (req, res, next) => {
 
             return next();
         }
-
+        
         req.payload = {authenticated: false, error: err};
     }
 

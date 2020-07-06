@@ -1,0 +1,57 @@
+form#transactionForm h3{
+    margin-bottom: 2rem;
+}
+form#transactionForm{
+    margin-top: 1rem;
+}
+form#transactionForm .name, form#transactionForm .address, form#transactionForm .city-state-zip-ctry{
+    display: flex;
+    justify-content: space-between;
+}
+form#transactionForm .name > .form-group, form#transactionForm .address > .form-group{
+    width: 49%;
+}
+form#transactionForm .city-state-zip-ctry > .form-group, form#transactionForm .city-state-zip-ctry > .form-group{
+    width: 24%;
+}
+form#transactionForm button{
+    margin-top: 1rem;
+    margin-right: 1rem;
+}
+form#transactionForm #message{
+    width: 100%;
+}
+  
+/* Mark input boxes that gets an error on validation: */
+form#transactionForm input.invalid {
+    background-color: #ffdddd;
+}
+  
+/* Hide all steps by default: */
+form#transactionForm .tab {
+    display: none;
+}
+  
+/* Make circles that indicate the steps of the form: */
+form#transactionForm .step {
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbbbbb;
+    border: none;
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.5;
+}
+  
+/* Mark the active step: */
+form#transactionForm .step.active {
+    opacity: 1;
+}
+  
+/* Mark the steps that are finished and valid: */
+form#transactionForm .step.finish {
+    background-color: #4CAF50;
+} 
+
+

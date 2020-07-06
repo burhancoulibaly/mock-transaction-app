@@ -1,1 +1,72 @@
-<p>transaction-modal works!</p>
+<h1 class="text-center">Transaction</h1>
+
+<form id="transactionForm" action="">
+    <div class="tab">
+        <h3>Billing Info</h3>
+
+        <!-- One "tab" for each step in the form: -->
+        <div class="name">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="name" class="form-control" id="firstName" placeholder="First Name">
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="name" class="form-control" id="lastName" placeholder="Last Name">
+            </div>
+        </div>
+
+        <div class="address">
+            <div class="form-group">
+                <label for="billingAddress">Address</label>
+                <input type="address" class="form-control" id="billingAddress" placeholder="Address">
+            </div>
+            <div class="form-group">
+                <label for="billingAddressLine2">Address Line 2</label>
+                <input type="address" class="form-control" id="billingAddressLine2" placeholder="Address line 2">
+            </div>
+        </div>
+
+        <div class="city-state-zip-ctry">
+            <div class="form-group">
+                <label for="city">City</label>
+                <input type="city" class="form-control" id="city" placeholder="City">
+            </div>
+            <div class="form-group">
+                <label for="state">State</label>
+                <input type="state" class="form-control" id="state" placeholder="State">
+            </div>
+            <div class="form-group">
+                <label for="zip">Address</label>
+                <input type="zip" class="form-control" id="zip" placeholder="ZIP">
+            </div>
+            <div class="form-group">
+                <label for="country">Address</label>
+                <select type="zip" name="country" class="form-control" id="country" placeholder="Country"></select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab">
+        <h3>Leave a message</h3>
+
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea name="message" id="message" placeholder=" Write your message here" rows="8"></textarea>
+        </div>
+    </div>
+    
+    <div style="overflow:auto;">
+      <div style="float:left;">
+        <button [disabled]="currentTab == 0" type="button" class="btn btn-primary" id="prevBtn" (click)="nextPrev(-1, $event)">Previous</button>
+        <button type="button" class="btn btn-primary" id="nextBtn" (click)="nextPrev(1, $event)">Next</button>
+      </div>
+    </div>
+    
+    <!-- Circles which indicates the steps of the form: -->
+    <div style="text-align:center;margin-top:40px;">
+      <span class="step"></span>
+      <span class="step"></span>
+    </div>
+    
+</form> 

@@ -8,12 +8,9 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./top-nav.component.css']
 })
 export class TopNavComponent implements OnInit {
-  @Output() open: EventEmitter<any> = new EventEmitter();
-  @Output() close: EventEmitter<any> = new EventEmitter();
-  
   public isAuthed: boolean;
 
-  constructor( private authService: AuthService){
+  constructor( private authService: AuthService, private modalService: ModalService){
     this.authService.authChange
       .subscribe((val) => {
         this.isAuthed = val;
@@ -25,7 +22,7 @@ export class TopNavComponent implements OnInit {
     
   }
 
-  logOut(){
+  logout(){
     this.authService.logOut()
       .then((response) => {
         console.log(response);
@@ -37,10 +34,14 @@ export class TopNavComponent implements OnInit {
       })
   }
 
-  logIn(){
-    this.authService.login("","")
+  login(form){
+    let email = form[0].value;
+    let password = form[1].value;
+
+    this.authService.login(email, password)
       .then((response) => {
         console.log(response);
+        this.closeModal(`login-modal`);
         return false;
       })
       .catch((error) => {
@@ -49,13 +50,16 @@ export class TopNavComponent implements OnInit {
       })
   }
 
-  openToggle(id: string) {
-    this.logIn();
-    this.open.emit(id);
+  signup(form){
+    //signup function
+    console.log(form);
     return false;
   }
-  closeToggle(id: string) {
-    this.close.emit(id);
-    return false;
+
+  openModal(id: string){
+    this.modalService.open(id);
+  }
+  closeModal(id: string){
+    this.modalService.close(id);
   }
 }

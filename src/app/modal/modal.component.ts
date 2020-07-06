@@ -41,10 +41,12 @@ export class ModalComponent implements OnInit {
   //open modal
   open(): void {
     document.body.classList.add('mtc-modal-open');
+    document.getElementById(this.id).classList.add('show')
   }
 
   //close modal
   close(): void {
     document.body.classList.remove('mtc-modal-open');
+    document.getElementById(this.id).classList.remove('show')
   }
 }

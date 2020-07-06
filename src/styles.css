@@ -10,6 +10,7 @@ html,body{
 h1, h2, h3, h4, h5, h6{
     margin-bottom: 0;
 }
+
 .mtc-modal{
     width: 570px;
     height: 600px;
@@ -35,21 +36,23 @@ h1, h2, h3, h4, h5, h6{
 .mtc-modal-open{
     overflow: hidden;
 }
-.mtc-modal-open .mtc-modal-background{
+.mtc-modal-open .show .mtc-modal-background{
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.mtc-modal-open .mtc-modal{
+.mtc-modal-open .show .mtc-modal{
     overflow-y: auto;
     display: flex;
     justify-content: center;
     z-index: 1000; 
 }
-.mtc-modal-open .mtc-modal .mtc-modal-content{
+.mtc-modal-open .show .mtc-modal .mtc-modal-content{
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
 }
 /* The Close Button */
 .close-btn-ctr{

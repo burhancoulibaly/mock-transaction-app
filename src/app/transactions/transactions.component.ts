@@ -1,4 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { ModalService } from '../modal.service';
+import { TransactionView } from '../transaction-view';
 
 @Component({
   selector: 'app-transactions',
@@ -6,20 +8,24 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./transactions.component.css']
 })
 export class TransactionsComponent implements OnInit {
-  @Output() open: EventEmitter<any> = new EventEmitter();
-  @Output() close: EventEmitter<any> = new EventEmitter();
+  public transactionViewData: TransactionView;
 
-  constructor() { }
+  constructor(private modalService: ModalService) { }
 
   ngOnInit(): void {
   }
 
-  openToggle(id: string) {
-    this.open.emit(id);
-    return false;
-  }
-  closeToggle(id: string) {
-    this.close.emit(id);
+  openModal(id: string, event: any){
+    let transactionViewRef = event.target.closest("section");
+    
+    this.transactionViewData = {
+      username: transactionViewRef.children[0].children[0].innerText,
+      amount: transactionViewRef.children[0].children[1].innerText,
+      message: transactionViewRef.children[1].innerText
+    };
+
+    console.log(this.transactionViewData);
+    this.modalService.open(id);
     return false;
   }
 }

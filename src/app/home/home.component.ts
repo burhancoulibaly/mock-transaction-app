@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth.service';
+import { ModalService } from '../modal.service';
 
 @Component({
   selector: 'app-home',
@@ -8,29 +8,33 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  @Output() open: EventEmitter<any> = new EventEmitter();
-  @Output() close: EventEmitter<any> = new EventEmitter();
-
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private modalService: ModalService) {}
 
   ngOnInit(): void {
     
   }
 
-  async openToggle(id: string) {
+  async openModal(id: string){
     try {
       console.log(await this.test());
     } catch (error) {
       console.log(error);
     }
-
-    this.open.emit(id);
+    console.log(id);
+    this.modalService.open(id);
     return false;
   }
 
-  closeToggle(id: string) {
-    this.close.emit(id);
-    return false;
+  createTransaction(form){
+    console.log(form);
+
+    for(let i = 0; i < 10; i++){
+      if(form[i].value){
+        console.log(form[i].value);
+      }
+    }
+
+    this.modalService.close('transaction-modal');
   }
 
   async test(){

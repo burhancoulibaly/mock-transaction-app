@@ -1,1 +1,11 @@
-<p>view-transaction-modal works!</p>
+<section *ngIf="transactionView">
+    <h2>{{transactionView.username}}</h2>
+    <br>
+    <h3>Amount: {{transactionView.amount}}</h3>
+    <br>
+    <br>
+    <p>Message: {{transactionView.message}}</p>
+</section>
+
+
+

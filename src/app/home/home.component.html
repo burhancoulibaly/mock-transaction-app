@@ -1,7 +1,6 @@
 <div class="container">
     <section id="page-heading">
-        <h1 class="text-center
-        ">
+        <h1 class="text-center">
             Welcome to the Mock Transaction App
         </h1>
         <p>
@@ -9,7 +8,7 @@
         </p>
     </section>
     <section id="donate-button">
-        <app-transaction-button (click)="openToggle('transaction-modal')"></app-transaction-button>
+        <app-transaction-button (click)="openModal('transaction-modal')"></app-transaction-button>
     </section>
     <br>
     <br>
@@ -17,6 +16,8 @@
     <br>
     <br>
     <br>
-    <app-transactions (open)="openToggle($event)"></app-transactions>
+    <app-transactions></app-transactions>
 </div>
-<modal id="transaction-modal"></modal>
+<modal id="transaction-modal">
+    <transaction-modal (submit)="createTransaction($event)"></transaction-modal>
+</modal>

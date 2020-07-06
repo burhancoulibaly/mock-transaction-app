@@ -53,7 +53,22 @@ export class TopNavComponent implements OnInit {
   signup(form){
     //signup function
     console.log(form);
-    return false;
+    let firstName = form[0].value;
+    let lastName = form[1].value;
+    let username = form[2].value;
+    let email = form[3].value;
+    let password = form[4].value;//add logic to make sure passwords are the same;
+
+    this.authService.signUp(username, firstName, lastName, email, password)
+      .then((response) => {
+        console.log(response);
+        this.closeModal(`sign-up-modal`);
+        return false;
+      })
+      .catch((error) => {
+        console.log(error);
+        return false;
+      })
   }
 
   openModal(id: string){
@@ -63,3 +78,5 @@ export class TopNavComponent implements OnInit {
     this.modalService.close(id);
   }
 }
+
+//username: String, f_name: String, l_name: String, email: String, password: String

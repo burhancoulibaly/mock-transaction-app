@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
-    console.log(id);
+
     this.modalService.open(id);
     return false;
   }

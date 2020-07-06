@@ -28,7 +28,7 @@ const typeDefs = gql(`
     }
     
     type Mutation {
-        register(username: String!, f_name: String!, l_name: String!, email: String!, password: String!): String!
+        register(username: String!, f_name: String!, l_name: String!, email: String!, password: String!): LoginResponse!
     }
 `);
 
@@ -36,11 +36,12 @@ const typeDefs = gql(`
 const resolvers = {
     //What the query returns
     Query: {
-        login: async(_, {email, password}, {req, res}) => {
+        login: async(_, {email, password}, {res}) => {
             try{
                 //check user credentials                
                 let loginInfo = await login.getRow("email", `"${email}"`);
-                
+                console.log(password);
+                console.log(compareSync(password, loginInfo[0].password.toString()));
                 if(loginInfo.length == 0 || compareSync(password, loginInfo[0].password.toString()) == false){
                     return {
                         response_type: `Error`,
@@ -90,24 +91,37 @@ const resolvers = {
     },
     //For when mutations(changes) are made to the database
     Mutation: {
-        register: async(_, {username, f_name, l_name, email, password}) => {
+        register: async(_, {username, f_name, l_name, email, password}, {res}) => {
             try{
                 const saltRounds = 12;
                 const salt = await genSalt(saltRounds);
                 const hashedPassword = await hash(password,salt);
+                const tokenVersion = 0;
 
-                let result = [];
+                await login.insertRow([`"${email}"`, `"${hashedPassword}"`, `"${tokenVersion}"`]);
+                await user.insertRow([`"${username}"`, `"${f_name}"`, `"${l_name}"`, `"${email}"`]);
 
-                result.push((await login.insertRow([`"${email}"`, `"${hashedPassword}"`])).toString());
-                result.push((await user.insertRow([`"${username}"`, `"${f_name}"`, `"${l_name}"`, `"${email}"`])).toString());
+                res.cookie('jid', createRefreshToken(email, tokenVersion), {
+                    maxAge: 7 * 24 * 60 * 60 * 1000, // 7days 24hours 60minutes 60secs 1000ms
+                    httpOnly: true,
+                    secure: true
+                    
+                });
 
-                console.log(result);
-
-                return `User registration successful`;
+                return {
+                    response_type: `Success`,
+                    response: `Login successful`,
+                    email: `${email}`,
+                    accessToken: createAccessToken(email, tokenVersion)
+                };
 
             }catch(err){
-                console.error(err);
-                throw err;
+                return {
+                    response_type: err.toString().split(":")[0].replace(" ",""),
+                    response: err.toString().split(":")[1].replace(" ",""),
+                    email: ``,
+                    accessToken: ``
+                }
             }
         },
     }

@@ -15,5 +15,6 @@ export class SignUpModalComponent implements OnInit {
 
   onSubmit(event){
     this.submit.emit(event.target.form.elements);
+    return false;
   }
 }

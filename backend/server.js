@@ -10,7 +10,7 @@ const express = require('express'),
       cookieParser = require("cookie-parser");
 
 
-let whitelist = ['http://localhost:4200', 'http://localhost:3000'];
+let whitelist = ['http://localhost:3000', 'http://localhost:4200', 'http://localhost:3000/graphql' ];
 let corsOptions = {
     origin: function (origin, callback) {
       if (whitelist.indexOf(origin) !== -1) {

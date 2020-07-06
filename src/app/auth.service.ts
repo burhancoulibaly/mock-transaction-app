@@ -33,12 +33,12 @@ export class AuthService {
               })
               .subscribe(
                 ({data}: any) =>  { 
-                  if(data.login.response_type == "Error"){
+                  if(data.login.response_type == "Error" || data.register.accessToken == ""){
                     if(data.login.response == "Invalid login"){
                       return reject("Invalid username or password");
                     }
                     
-                    return reject("Unable to log you in at this moment");
+                    return reject(data.register.response ? data.register.response : "No access token returned");
                   }
 
                   this.authStatus = { isLoggedIn: true, email: data.login.email, token: data.login.accessToken };
@@ -57,20 +57,43 @@ export class AuthService {
   }
 
   signUp(username: String, f_name: String, l_name: String, email: String, password: String){
+    const register = gql(`
+                        mutation register($username: String!, $f_name: String!, $l_name: String!, $email: String!, $password: String!){
+                          register(username: $username, f_name: $f_name, l_name: $l_name, email: $email, password: $password){
+                            response_type,
+                            response,
+                            email,
+                            accessToken
+                          }
+                        }
+                     `)
+
     return new Promise((resolve, reject) => {
             this.apollo
               .mutate({
-                mutation: gql(`
-                  {
-                    register(username: ${username}, f_name: ${f_name}, l_name: ${l_name}, email: ${email}, password: ${password})
-                  }
-                `)
+                mutation: register,
+                variables: {
+                  username: `${username}`,
+                  f_name: `${f_name}`,
+                  l_name: `${l_name}`,
+                  email: `${email}`,
+                  password: `${password}`
+                }
               })
               .subscribe(
                 ({data}: any) =>  { 
-                  return resolve(data);
+                  console.log(data);
+                  if(data.register.response_type == "Error" || data.register.accessToken == ""){ 
+                    return reject(data.register.response ? data.register.response : "No access token returned");
+                  }
+                
+                  this.authStatus = { isLoggedIn: true, email: data.register.email, token: data.register.accessToken };
+                  console.log(this.authStatus);
+                  this.authChanged(); 
+                  return resolve("Account created successfully");
                 },
                 (err) => {
+                  console.log(err);
                   return reject(err);
                 }
               )

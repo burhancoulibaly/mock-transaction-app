@@ -1,6 +1,9 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { AuthService } from '../auth.service';
 import { ModalService } from '../modal.service';
+import { Router } from '@angular/router';
+import { TransactionInfo } from '../transaction-info';
+import { TransactionService } from '../transaction.service';
 
 @Component({
   selector: 'app-home',
@@ -8,40 +11,54 @@ import { ModalService } from '../modal.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  constructor(private authService: AuthService, private modalService: ModalService) {}
+  constructor(private authService: AuthService, private modalService: ModalService, private router: Router, private transactionService: TransactionService) {}
 
   ngOnInit(): void {
     
   }
 
   async openModal(id: string){
-    try {
-      console.log(await this.test());
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   console.log(await this.test());
+    // } catch (error) {
+    //   console.log(error);
+    // }
 
     this.modalService.open(id);
     return false;
   }
 
-  createTransaction(form){
-    console.log(form);
+  submitTransaction(form){
+    console.log(this.authService.getAuthStatus());
+    let transactionInfo: TransactionInfo = {
+      billing: {
+        f_name: form[0].value,
+        l_name: form[1].value,
+        address: form[5].value,
+        addressLine2: form[6].value,
+        city: form[7].value,
+        state: form[8].value,
+        zip: form[9].value,
+        country: form[10].value,
+      },
+      username: this.authService.getAuthStatus().username,
+      cardNum: form[2].value,
+      expDate: form[3].value,
+      ccv: form[4].value,
+      message: form[11].value,
+    };
 
-    for(let i = 0; i < 10; i++){
-      if(form[i].value){
-        console.log(form[i].value);
-      }
-    }
+    this.transactionService.submitTransaction(transactionInfo);
 
     this.modalService.close('transaction-modal');
   }
 
-  async test(){
-    try {
-      return await this.authService.test();
-    } catch (error) {
-      return error;
-    }
-  }
+  // async test(){
+  //   try {
+  //     return await this.authService.test();
+  //   } catch (error) {
+  //     this.router.navigateByUrl('/login');
+  //     return error;
+  //   }
+  // }
 }

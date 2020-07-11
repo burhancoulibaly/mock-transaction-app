@@ -1,0 +1,17 @@
+#login-container{
+    border: 1px solid #ddd;
+    width: 800px;
+    height: 600px;
+    border-radius: 3%;
+    position: fixed;
+    top:45%;
+    left: 50%;
+    transform: translate(-45%, -50%);
+    margin: 1.75rem 0;
+    padding: 1rem;
+}
+.signup-link{
+    position: absolute;
+    bottom: 0px;
+    padding: 1rem 0;
+}

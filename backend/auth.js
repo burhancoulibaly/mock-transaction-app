@@ -25,7 +25,7 @@ const authenticateUser = async (req, res, next) => {
     }catch(err){
         if(err.toString().split(":")[1].replace(" ", "") == "jwt expired"){
             try {
-                const token = (await refreshToken(req.cookies.jid)).accessToken;
+                const token = (await refreshToken(req.cookies.jid), res).accessToken;
                 const payload = verify(token, process.env.ACCESS_TOKEN_SECRET);
                 req.payload = {authenticated: true, data: payload};
             } catch (error) {
@@ -41,26 +41,35 @@ const authenticateUser = async (req, res, next) => {
     return next();
 }
 
-const refreshToken = function(refreshToken){
+const refreshToken = function(refreshToken, response){
     return new Promise(async(resolve, reject) => {
         let login = new Entity("login");
-
-        let payload = null;
+        let payload;
+        let t1ReturnVals = ["email", "token_version", "password"];
+        let t2ReturnVals = ["user_name"];
 
         try{
             payload = verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
             //Since token is valid a new accessToken is returned;
-            const loginInfo = await login.getRow("email", `"${payload.email}"`);
+            let loginInfo = await login.getFKRightJoin(`users`, t1ReturnVals, t2ReturnVals, 'email', `"${payload.email}"`);
 
             if(!loginInfo){
-                reject({ ok: false, email: ``, accessToken: ``});
+                reject({ ok: false, email: ``, username: ``, accessToken: ``});
             }
 
+            response.cookie('jid', createRefreshToken(loginInfo[0].email.toString(), loginInfo[0].user_name.toString(), loginInfo[0].token_version.toString()), {
+                maxAge: 7 * 24 * 60 * 60 * 1000, // 7days 24hours 60minutes 60secs 1000ms
+                httpOnly: true,
+                secure: true
+                
+            });
+            
             return resolve({
                 ok: true,
                 email: loginInfo[0].email,
-                accessToken: createAccessToken(loginInfo[0].email, loginInfo[0].token_version)
+                username: loginInfo[0].user_name,
+                accessToken: createAccessToken(loginInfo[0].email.toString(), loginInfo[0].user_name.toString(), loginInfo[0].token_version.toString())
             });
         }catch(err){
             console.log(err);
@@ -69,12 +78,15 @@ const refreshToken = function(refreshToken){
     })
 }
 
+//Test this at some point
 const revokeTokens = function(email){
     return new Promise(async(resolve, reject) => {
         let login = new Entity("login");
+        let t1ReturnVals = ["email", "token_version", "password"];
+        let t2ReturnVals = ["user_name"];
 
         try {
-            const loginInfo = await login.getRow("email", `"${email}"`);
+            let loginInfo = await login.getFKRightJoin(`users`, t1ReturnVals, t2ReturnVals, 'email', `"${email}"`);
             const response = await login.editRow("email", `"${loginInfo[0].email}"`, "token_version", `"${++loginInfo[0].token_version}"`);
 
             if(!response){

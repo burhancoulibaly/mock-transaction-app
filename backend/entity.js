@@ -34,7 +34,12 @@ class Entity {
                 
                 //insert row using args object for fields;
                 //INSERT INTO table_name VALUES (value1, value2, value3, ...);
-                let sql = `INSERT INTO ${this._entity} VALUES (`;
+
+                let sql = `INSERT INTO ${this._entity} VALUES (DEFAULT, `;
+
+                if(this._entity == "users" || this._entity == "login"){
+                    sql = `INSERT INTO ${this._entity} VALUES (`;   
+                }
                 
                 args.map((val, i) => {
                     sql += val.toString();
@@ -168,6 +173,83 @@ class Entity {
 
                 //edits a field in the row, returns array [success/error, results(error/row that was changed)]
                 let sql = `UPDATE ${this._entity} SET ${editField} = ${editValue} WHERE ${searchKey} = ${searchValue}`;
+
+                try {
+                    let response = await this.queryFn(db, sql);
+                    
+                    if(!response){
+                        reject("Empty Response");
+                    }
+
+                    resolve(response);
+                } catch (error) {
+                    reject(error);
+                }
+                
+                db.release();
+            })
+        })
+    };
+
+    getFKRightJoin(t2, t1ReturnVals, t2ReturnVals, field, searchKey){
+        return new Promise((resolve,reject) => {
+            let t1 = this._entity;
+
+            pool.getConnection(async(err, db) => {
+                if(err) reject(err); 
+
+                let sql = `SELECT `;
+
+                if(t1ReturnVals && t2ReturnVals){
+                    t1ReturnVals.map((val, i) => {
+                        sql += `${t1}.${val.toString()}`;
+    
+                        if(i < t1ReturnVals.length-1){
+                            sql += ", ";
+                        }
+                    });
+
+                    sql += ", ";
+
+                    t2ReturnVals.map((val, i) => {
+                        sql += `${t2}.${val.toString()}`;
+    
+                        if(i < t2ReturnVals.length-1){
+                            sql += ", ";
+                        }
+                    });
+
+                    sql += ` FROM `;
+
+                }else if(t1ReturnVals && !t2ReturnVals){
+                    t1ReturnVals.map((val, i) => {
+                        sql += `${t1}.${val.toString()}`;
+    
+                        if(i < t1ReturnVals.length-1){
+                            sql += ", ";
+                        }
+                    });
+
+                    sql += ` FROM `;
+
+                }else if(!t1ReturnVals && t2ReturnVals){
+                    t2ReturnVals.map((val, i) => {
+                        sql += `${t2}.${val.toString()}`;
+    
+                        if(i < t2ReturnVals.length-1){
+                            sql += ", ";
+                        }
+                    });
+
+                    sql += ` FROM `;
+
+                }else{
+                    sql += `SELECT * FROM `;
+                }
+
+                sql += `${t1} RIGHT JOIN ${t2} ON ${t1}.${field} = ${t2}.${field} WHERE ${t1}.${field} = ${searchKey}`;
+                
+                // console.log(sql);
 
                 try {
                     let response = await this.queryFn(db, sql);

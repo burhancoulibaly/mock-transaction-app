@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalService } from '../modal.service';
 import { AuthService } from '../auth.service';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-top-nav',
@@ -9,8 +10,15 @@ import { AuthService } from '../auth.service';
 })
 export class TopNavComponent implements OnInit {
   public isAuthed: boolean;
+  public href: string = "";
 
-  constructor( private authService: AuthService, private modalService: ModalService){
+  constructor( private authService: AuthService, private modalService: ModalService, private router: Router){
+    router.events.subscribe((val: any) => {
+      if(val instanceof NavigationEnd){
+        this.href = val.urlAfterRedirects;
+      } 
+    });
+
     this.authService.authChange
       .subscribe((val) => {
         this.isAuthed = val;
@@ -19,7 +27,6 @@ export class TopNavComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    
   }
 
   logout(){

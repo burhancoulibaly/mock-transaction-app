@@ -3,7 +3,6 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
-import { response } from 'express';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +24,7 @@ export class AuthService {
                       response_type,
                       response,
                       email,
+                      username,
                       accessToken
                     }
                   }
@@ -33,15 +33,15 @@ export class AuthService {
               })
               .subscribe(
                 ({data}: any) =>  { 
-                  if(data.login.response_type == "Error" || data.register.accessToken == ""){
+                  if(data.login.response_type == "Error" || data.login.accessToken == ""){
                     if(data.login.response == "Invalid login"){
                       return reject("Invalid username or password");
                     }
                     
-                    return reject(data.register.response ? data.register.response : "No access token returned");
+                    return reject(data.login.response ? data.login.response : "No access token returned");
                   }
 
-                  this.authStatus = { isLoggedIn: true, email: data.login.email, token: data.login.accessToken };
+                  this.authStatus = { isLoggedIn: true, email: data.login.email, username: data.login.username, token: data.login.accessToken };
                   this.authChanged(); 
                   return resolve("Login Successfull");
                 },
@@ -63,6 +63,7 @@ export class AuthService {
                             response_type,
                             response,
                             email,
+                            username,
                             accessToken
                           }
                         }
@@ -87,7 +88,7 @@ export class AuthService {
                     return reject(data.register.response ? data.register.response : "No access token returned");
                   }
                 
-                  this.authStatus = { isLoggedIn: true, email: data.register.email, token: data.register.accessToken };
+                  this.authStatus = { isLoggedIn: true, email: data.register.email, username: data.register.username, token: data.register.accessToken };
                   console.log(this.authStatus);
                   this.authChanged(); 
                   return resolve("Account created successfully");
@@ -126,7 +127,7 @@ export class AuthService {
         .subscribe(
           (data) => {
             console.log(data);
-            this.authStatus = { isLoggedIn: true, email: data.email, token: data.accessToken };
+            this.authStatus = { isLoggedIn: true, email: data.email, username: data.username, token: data.accessToken };
             this.authChanged();
             return resolve("Token successfully refreshed");
           },
@@ -169,7 +170,7 @@ export class AuthService {
               .subscribe(
                 ({data}: any) =>  { 
                   if(data.sammysHello.response_type == "JsonWebTokenError" || data.sammysHello.response_type == "TokenExpiredError"){
-                    return resolve("Unable to authenticate user, try logging in");
+                    return reject("Unable to authenticate user, try logging in");
                   }
                   return resolve(data);
                 },

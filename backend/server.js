@@ -51,6 +51,7 @@ app.post('/revokeTokens', async(req, res) => {
     
     try {
         let response = await revokeTokens(req.body.email);
+        res.clearCookie('jid');
         res.status(200).send(response);
         return;
     } catch (error) {
@@ -61,15 +62,7 @@ app.post('/revokeTokens', async(req, res) => {
 
 app.get('/refreshToken', async(req, res) => {
     try {
-        let response = await refreshToken(req.cookies.jid);
-        const payload = verify(response.accessToken, process.env.ACCESS_TOKEN_SECRET);
-
-        res.cookie('jid', createRefreshToken(payload.email, payload.tokenVersion), {
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7days 24hours 60minutes 60secs 1000ms
-            httpOnly: true,
-            secure: true
-            
-        });
+        let response = await refreshToken(req.cookies.jid, res);
 
         res.status(200).send(response);
         return;

@@ -1,13 +1,13 @@
 <div id="top-nav">
     <div class="menu">
-        <a href="#" class="active">
+        <a routerLink="/home" class="active">
             <h1>Home</h1>
         </a>
     </div>
     <div class="auth">
-        <button *ngIf="!isAuthed" href="" (click)="openModal('login-modal')"><h1>Login</h1></button>
-        <button *ngIf="!isAuthed" href="" (click)="openModal('sign-up-modal')"><h1>Sign Up</h1></button>
-        <button *ngIf="isAuthed" href="" (click)="logout()"><h1>Logout</h1></button>
+        <button *ngIf="!isAuthed && !href.includes('login') && !href.includes('signup')" href="" (click)="openModal('login-modal')"><h1>Login</h1></button>
+        <button *ngIf="!isAuthed && !href.includes('login') && !href.includes('signup')" href="" (click)="openModal('sign-up-modal')"><h1>Sign Up</h1></button>
+        <button *ngIf="isAuthed && !href.includes('login') && !href.includes('signup')" href="" (click)="logout()"><h1>Logout</h1></button>
     </div>
 </div>
 <modal id="login-modal">

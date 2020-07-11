@@ -4,13 +4,23 @@ form#transactionForm h3{
 form#transactionForm{
     margin-top: 1rem;
 }
-form#transactionForm .name, form#transactionForm .address, form#transactionForm .city-state-zip-ctry{
+form#transactionForm .name, form#transactionForm .address, form#transactionForm .city-state-zip-ctry, form#transactionForm .cardInfo{
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 form#transactionForm .name > .form-group, form#transactionForm .address > .form-group{
     width: 49%;
 }
+form#transactionForm .cardInfo > .form-group{
+    width: 32.3%;
+}
+/* form#transactionForm .cardInfo > .form-group .expDate{
+    width: 50%;
+}
+form#transactionForm .cardInfo > .form-group .ccv{
+    width: 50%;
+} */
 form#transactionForm .city-state-zip-ctry > .form-group, form#transactionForm .city-state-zip-ctry > .form-group{
     width: 24%;
 }

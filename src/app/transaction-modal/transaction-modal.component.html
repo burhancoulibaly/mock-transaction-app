@@ -16,6 +16,21 @@
             </div>
         </div>
 
+        <div class="cardInfo">
+            <div class="form-group">
+                <label for="cardNum">Card Number</label>
+                <input type="cardnumber" class="form-control cardNum" id="cardNum" placeholder="Enter Card Number">
+            </div>
+            <div class="form-group">
+                <label for="expDate">Expiration</label>
+                <input type="cardinfo" class="form-control expDate" id="expDate" placeholder="date">
+            </div>
+            <div class="form-group">
+                <label for="ccv">CVV</label>
+                <input type="ccv" class="form-control ccv" id="cvv" placeholder="CVV">
+            </div>
+        </div>
+
         <div class="address">
             <div class="form-group">
                 <label for="billingAddress">Address</label>
@@ -34,15 +49,19 @@
             </div>
             <div class="form-group">
                 <label for="state">State</label>
-                <input type="state" class="form-control" id="state" placeholder="State">
+                <select type="zip" name="state" class="form-control" id="state" placeholder="State">
+                    <option value="NY" selected="selected">New York</option>
+                </select>
             </div>
             <div class="form-group">
-                <label for="zip">Address</label>
+                <label for="zip">ZIP</label>
                 <input type="zip" class="form-control" id="zip" placeholder="ZIP">
             </div>
             <div class="form-group">
-                <label for="country">Address</label>
-                <select type="zip" name="country" class="form-control" id="country" placeholder="Country"></select>
+                <label for="country">Country</label>
+                <select type="zip" name="country" class="form-control" id="country" placeholder="Country">
+                    <option value="United States of Random" selected="selected">United States of Random</option>
+                </select>
             </div>
         </div>
     </div>

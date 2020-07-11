@@ -19,7 +19,7 @@ h1, h2, h3, h4, h5, h6{
     top:45%;
     left: 50%;
     transform: translate(-45%, -50%);
-    background: white;;
+    background: white;
     margin: 1.75rem 0;
     padding: 1rem;
     display: none;

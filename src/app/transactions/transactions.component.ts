@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ModalService } from '../modal.service';
 import { TransactionView } from '../transaction-view';
+import { TransactionService } from '../transaction.service';
 
 @Component({
   selector: 'app-transactions',
@@ -10,9 +11,18 @@ import { TransactionView } from '../transaction-view';
 export class TransactionsComponent implements OnInit {
   public transactionViewData: TransactionView;
 
-  constructor(private modalService: ModalService) { }
+  constructor(private modalService: ModalService, private transactionService: TransactionService) { }
 
   ngOnInit(): void {
+    this.transactionService.getTransactions()
+    .subscribe(
+      ({data}: any) =>  { 
+        console.log(data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
   }
 
   openModal(id: string, event: any){

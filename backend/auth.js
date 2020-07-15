@@ -5,12 +5,12 @@ const { sign, verify } = require('jsonwebtoken');
 
 dotenv.config({ path: envFile });
 
-const createAccessToken = (email, tokenVersion) => {
-    return sign({ email: email, tokenVersion: tokenVersion }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+const createAccessToken = (email, username,tokenVersion) => {
+    return sign({ email: email, username: username, tokenVersion: tokenVersion }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
 }
 
-const createRefreshToken = (email, tokenVersion) => {
-    return sign({ email: email, tokenVersion: tokenVersion }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
+const createRefreshToken = (email, username, tokenVersion) => {
+    return sign({ email: email, username: username, tokenVersion: tokenVersion }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
 }
 
 //All errors functions below return will be jwt token errors.
@@ -53,6 +53,10 @@ const refreshToken = function(refreshToken, response){
 
             //Since token is valid a new accessToken is returned;
             let loginInfo = await login.getFKRightJoin(`users`, t1ReturnVals, t2ReturnVals, 'email', `"${payload.email}"`);
+
+            if(payload.tokenVersion != loginInfo[0].token_version){
+                reject({ ok: false, email: ``, username: ``, accessToken: ``});
+            }
 
             if(!loginInfo){
                 reject({ ok: false, email: ``, username: ``, accessToken: ``});

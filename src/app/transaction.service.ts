@@ -10,6 +10,24 @@ export class TransactionService {
 
   constructor(private apollo: Apollo) { }
 
+  getTransactions(){//check error this will return if token and refresh token expire
+    return this.apollo
+            .watchQuery({
+              query: gql(`
+                {
+                  getTransactions {
+                    f_name,
+                    l_name,
+                    username, 
+                    lastFourCardNum,
+                    message
+                  }
+                }
+              `)
+            })
+            .valueChanges;
+  }
+
   submitTransaction(transaction: TransactionInfo){
     const transactionRef = gql(`
                                 mutation transaction($f_name: String!, $l_name: String!, $address: String!, $addressLine2: String!, $city: String!, $state: String!, $zip: String!, $country: String!, $username: String!, $cardNum: String!, $expDate: String!, $message: String!){
@@ -54,6 +72,10 @@ export class TransactionService {
                 }
               )
       })
+  }
+
+  cancelTransaction(transactionId: string){
+    //check if auithed user is same as user trying to cancel order kinda redundant, but will find a good solution
   }
 
 

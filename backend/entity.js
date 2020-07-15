@@ -148,6 +148,7 @@ class Entity {
                 if(err) reject(err); 
 
                 //returns all rows and columns
+                let sql = `SELECT * FROM ${this._entity}`;
                 
                 try {
                     let response = await this.queryFn(db, sql);

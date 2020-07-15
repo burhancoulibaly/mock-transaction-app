@@ -6,8 +6,6 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./login-modal.component.css']
 })
 export class LoginModalComponent implements OnInit {
-  private email: string;
-  private password: string;
   @Output() submit: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
@@ -17,6 +15,7 @@ export class LoginModalComponent implements OnInit {
 
   onSubmit(event){
     this.submit.emit(event.target.form.elements);
+    (<HTMLFormElement>document.getElementById("loginForm")).reset();
     return false;
   }
 

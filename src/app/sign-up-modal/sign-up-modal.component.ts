@@ -15,6 +15,7 @@ export class SignUpModalComponent implements OnInit {
 
   onSubmit(event){
     this.submit.emit(event.target.form.elements);
+    (<HTMLFormElement>document.getElementById("signupForm")).reset();
     return false;
   }
 }

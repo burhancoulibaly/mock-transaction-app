@@ -18,18 +18,16 @@ export class HomeComponent implements OnInit {
   }
 
   async openModal(id: string){
-    // try {
-    //   console.log(await this.test());
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    if(!this.authService.getAuthStatus()){
+      this.router.navigateByUrl('/login');
+      return false;
+    }
 
     this.modalService.open(id);
     return false;
   }
 
   submitTransaction(form){
-    console.log(this.authService.getAuthStatus());
     let transactionInfo: TransactionInfo = {
       billing: {
         f_name: form[0].value,
@@ -52,13 +50,4 @@ export class HomeComponent implements OnInit {
 
     this.modalService.close('transaction-modal');
   }
-
-  // async test(){
-  //   try {
-  //     return await this.authService.test();
-  //   } catch (error) {
-  //     this.router.navigateByUrl('/login');
-  //     return error;
-  //   }
-  // }
 }

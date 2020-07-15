@@ -1,5 +1,4 @@
-const { gql} = require('apollo-server-express'),
-      { hash, genSalt, compareSync } = require('bcrypt'),
+const { hash, genSalt, compareSync } = require('bcrypt'),
       { createAccessToken, createRefreshToken } = require('../auth'),
       Entity = require("../entity");
 
@@ -9,10 +8,13 @@ let login = new Entity("login");
 //graphql schema
 //Query schema
 //Mutation Schema
-const typeDefs = gql(`
-    type Query {
-        sammysHello: Response!
+const typeDefs = `
+    extend type Query {
         login(email: String!, password: String!): LoginResponse!
+    }
+
+    extend type Mutation {
+        register(username: String!, f_name: String!, l_name: String!, email: String!, password: String!): LoginResponse!
     }
 
     type LoginResponse {
@@ -22,17 +24,7 @@ const typeDefs = gql(`
         username: String!
         accessToken: String!
     }
-
-    type Response {
-        response_type: String!
-        response: String!
-    }
-    
-    type Mutation {
-        register(username: String!, f_name: String!, l_name: String!, email: String!, password: String!): LoginResponse!
-        transaction(f_name: String!, l_name: String!, address: String!, addressLine2: String!, city: String!, state: String!, zip: String!, country: String!, username: String!, cardNum: String!, expDate: String!, message: String!): Response!
-    }
-`);
+`;
 
 //An object that contains mapping to get data that schema needs
 const resolvers = {
@@ -79,21 +71,6 @@ const resolvers = {
                     accessToken: ``
                 }
             }
-        },
-        sammysHello: async(_,data,{req}) => {
-            console.log(req.headers);
-            if(!req.payload.authenticated){
-                req.payload.error = req.payload.error.toString().split(":");
-                return {
-                    response_type: `${req.payload.error[0].replace(" ","")}`,
-                    response: `${req.payload.error[1].replace(" ","")}`
-                }
-            }
-
-            return {
-                response_type: "Success",
-                response: "Hello There"
-            }
         }
     },
     //For when mutations(changes) are made to the database
@@ -133,39 +110,6 @@ const resolvers = {
                 }
             }
         },
-        transaction: async(_, { f_name, l_name, address, addressLine2, city, state, zip, country, username, cardNum, expDate, message }, {req}) => {
-            let stateEntity = new Entity("state");
-            let billingEntity = new Entity("billing_info");
-            let paymentInfoEntity = new Entity("payment_info");
-            let transactionEntity = new Entity("transactions");
-
-            try {   
-                let stateRecord = await stateEntity.getRow("state_name", `"${state}"`);
-                let billingResponse = await billingEntity.insertRow([`"${f_name}"`, `"${l_name}"`, `"${address} ${addressLine2}"`, `"${stateRecord[0].state_id}"`, `"${zip}"`, `"${city}"`]);
-
-                console.log(billingResponse);
-
-                // have to format expiration date as date for mysql, and need a way to search for correct billing id, or have insertRow function return inserted records primary key; 
-                let paymentInfoResponse = await paymentInfoEntity.insertRow([`1`, `"${cardNum}"`, `"${expDate}"`, `${billingResponse.insertId}`]);
-
-                //will also have to find a way to retrieve payment id here, or have insertRow function return inserted records primary key.
-                await transactionEntity.insertRow([`"${username}"`, `${paymentInfoResponse.insertId}`, `"${message}"`]);
-
-                return {
-                    response_type: `Success`,
-                    response: `transaction successful`,
-                }
-                
-            } catch (error) {
-                console.log(error);
-                
-                return {
-                    response_type: `${error.toString().split(":")[0].replace(" ","")}`,
-                    response: `${error.toString().split(":")[1].replace(" ","")}`
-                }
-            }
-            
-        }
     }
 };
 

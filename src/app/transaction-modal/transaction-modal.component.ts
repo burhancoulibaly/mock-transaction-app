@@ -42,7 +42,8 @@ export class TransactionModalComponent implements OnInit {
     if (this.currentTab >= tabs.length) {
       //...the form gets submitted:
       this.onSubmit(event);
-      return false;
+      this.currentTab = 0;
+      (<HTMLFormElement>document.getElementById("transactionForm")).reset();
     }
     console.log("submit button wasn't clicked")
     // Otherwise, display the correct tab:

@@ -1,14 +1,15 @@
 const express = require('express'),
       app = express(),
       {ApolloServer} = require('apollo-server-express'),
-      {typeDefs, resolvers} = require('./resolvers/user-resolver'),
-      {authenticateUser, revokeTokens, refreshToken, createRefreshToken} = require('./auth'),
+      {resolvers: mainResolver, typeDefs: mainTypeDefs} = require('./resolvers/resolver'),
+      {resolvers: userResolver, typeDefs: userTypeDefs} = require('./resolvers/user-resolver'),
+      {resolvers: transactionResolver, typeDefs: transactionTypeDefs} = require('./resolvers/transactions-resolver'),
+      {authenticateUser, revokeTokens, refreshToken} = require('./auth'),
+      {merge} = require('lodash'),
       cors = require('cors'),
       bodyParser = require('body-parser'),
       server = require('http').createServer(app),
-      { verify } = require('jsonwebtoken');
       cookieParser = require("cookie-parser");
-
 
 let whitelist = ['http://localhost:3000', 'http://localhost:4200', 'http://localhost:3000/graphql' ];
 let corsOptions = {
@@ -20,12 +21,12 @@ let corsOptions = {
       }
     },
     credentials: true
-  }
+}
 
 //integrating graphql settings
 const apolloServer = new ApolloServer({
-    typeDefs, 
-    resolvers,
+    typeDefs: [mainTypeDefs, userTypeDefs, transactionTypeDefs], 
+    resolvers: merge(mainResolver, userResolver, transactionResolver),
     context: ({ req, res }) => ({ req, res })
 });
 
@@ -51,7 +52,6 @@ app.post('/revokeTokens', async(req, res) => {
     
     try {
         let response = await revokeTokens(req.body.email);
-        res.clearCookie('jid');
         res.status(200).send(response);
         return;
     } catch (error) {

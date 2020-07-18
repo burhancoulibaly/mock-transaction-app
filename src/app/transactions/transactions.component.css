@@ -31,3 +31,7 @@
 .transactions .payment-info h1{
     font-size: 5rem;
 }
+view-transaction-modal{
+    width: 100%;
+    height: 100%;
+}

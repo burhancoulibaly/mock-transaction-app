@@ -1,0 +1,10 @@
+#transaction-view{
+    width: 100%;
+    height: 100%;
+}
+#transaction-view .cancel-trans{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 1rem;
+}

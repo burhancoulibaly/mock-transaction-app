@@ -142,13 +142,19 @@ class Entity {
         })
     };
 
-    getAll(){
+    getAll(searchKey, searchValue){
         return new Promise((resolve,reject) => {
             pool.getConnection(async(err, db) => {
                 if(err) reject(err); 
 
                 //returns all rows and columns
                 let sql = `SELECT * FROM ${this._entity}`;
+
+                if(searchKey){
+                    sql += ` WHERE ${searchKey} = ${searchValue}`
+                }
+
+                sql += ";";
                 
                 try {
                     let response = await this.queryFn(db, sql);

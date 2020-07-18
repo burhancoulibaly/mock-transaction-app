@@ -9,6 +9,8 @@ import { TransactionService } from '../transaction.service';
   styleUrls: ['./transactions.component.css']
 })
 export class TransactionsComponent implements OnInit {
+  public transactionViewIndex: number = 0;
+  public transactions: Array<TransactionView>;
   public transactionViewData: TransactionView;
 
   constructor(private modalService: ModalService, private transactionService: TransactionService) { }
@@ -17,24 +19,28 @@ export class TransactionsComponent implements OnInit {
     this.transactionService.getTransactions()
     .subscribe(
       ({data}: any) =>  { 
-        console.log(data);
+        this.transactions = data.getTransactions;
+        console.log(this.transactions);
       },
       (err) => {
-        console.log(err);
+        return err;
       }
     )
   }
 
-  openModal(id: string, event: any){
-    let transactionViewRef = event.target.closest("section");
-    
+  openModal(id: string, ind: number){
     this.transactionViewData = {
-      username: transactionViewRef.children[0].children[0].innerText,
-      amount: transactionViewRef.children[0].children[1].innerText,
-      message: transactionViewRef.children[1].innerText
+      transactionId: this.transactions[ind].transactionId,
+      f_name: this.transactions[ind].f_name,
+      l_name: this.transactions[ind].l_name,
+      lastFourCardNum: this.transactions[ind].lastFourCardNum,
+      amount: this.transactions[ind].amount,
+      message: this.transactions[ind].message,
+      transactionDate: this.transactions[ind].transactionDate,
+      username: this.transactions[ind].username,
     };
 
-    console.log(this.transactionViewData);
+
     this.modalService.open(id);
     return false;
   }

@@ -33,14 +33,14 @@ export class AuthService {
               })
               .subscribe(
                 ({data}: any) =>  { 
-                  if(data.login.response_type == "Error" || data.login.accessToken == ""){
+                  if(data.login.response_type != "Success"){ 
                     if(data.login.response == "Invalid login"){
                       return reject("Invalid username or password");
                     }
                     
                     return reject(data.login.response ? data.login.response : "No access token returned");
                   }
-
+                  
                   this.authStatus = { isLoggedIn: true, email: data.login.email, username: data.login.username, token: data.login.accessToken };
                   this.authChanged(); 
                   return resolve("Login Successfull");
@@ -83,10 +83,11 @@ export class AuthService {
               })
               .subscribe(
                 ({data}: any) =>  { 
-                  console.log(data);
-                  if(data.register.response_type == "Error" || data.register.accessToken == ""){ 
+                  if(data.register.response_type != "Success"){ 
                     return reject(data.register.response ? data.register.response : "No access token returned");
                   }
+
+                  console.log(data);
                 
                   this.authStatus = { isLoggedIn: true, email: data.register.email, username: data.register.username, token: data.register.accessToken };
                   console.log(this.authStatus);
@@ -169,9 +170,10 @@ export class AuthService {
               })
               .subscribe(
                 ({data}: any) =>  { 
-                  if(data.sammysHello.response_type == "JsonWebTokenError" || data.sammysHello.response_type == "TokenExpiredError"){
-                    return reject("Unable to authenticate user, try logging in");
+                  if(data.sammysHello.response_type != "Success"){ 
+                    return reject(data.sammysHello.response ? data.sammysHello.response : "Unable to authenticate user, try logging in");
                   }
+
                   return resolve(data);
                 },
                 (err) => {

@@ -21,7 +21,7 @@ const resolvers = {
     //What the query returns
     Query: {
         sammysHello: async(_,data,{req}) => {
-            console.log(req.headers);
+            // console.log(req.headers);
             if(!req.payload.authenticated){
                 req.payload.error = req.payload.error.toString().split(":");
                 return {

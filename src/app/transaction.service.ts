@@ -16,10 +16,13 @@ export class TransactionService {
               query: gql(`
                 {
                   getTransactions {
+                    transactionId,
                     f_name,
                     l_name,
-                    username, 
+                    username,
+                    amount,
                     lastFourCardNum,
+                    transactionDate,
                     message
                   }
                 }
@@ -30,8 +33,8 @@ export class TransactionService {
 
   submitTransaction(transaction: TransactionInfo){
     const transactionRef = gql(`
-                                mutation transaction($f_name: String!, $l_name: String!, $address: String!, $addressLine2: String!, $city: String!, $state: String!, $zip: String!, $country: String!, $username: String!, $cardNum: String!, $expDate: String!, $message: String!){
-                                  transaction(f_name: $f_name, l_name: $l_name, address: $address, addressLine2: $addressLine2, city: $city, state: $state, zip: $zip, country: $country, username: $username, cardNum: $cardNum, expDate: $expDate, message: $message){
+                                mutation transaction($f_name: String!, $l_name: String!, $address: String!, $addressLine2: String!, $city: String!, $state: String!, $zip: String!, $country: String!, $username: String!, $amount: Int!, $cardNum: String!, $expDate: String!, $message: String!){
+                                  transaction(f_name: $f_name, l_name: $l_name, address: $address, addressLine2: $addressLine2, city: $city, state: $state, zip: $zip, country: $country, username: $username, amount: $amount, cardNum: $cardNum, expDate: $expDate, message: $message){
                                     response_type,
                                     response,
                                   }
@@ -52,6 +55,7 @@ export class TransactionService {
                   zip: `${transaction.billing.zip}`,
                   country: `${transaction.billing.country}`,
                   username: `${transaction.username}`,
+                  amount: transaction.amount,
                   cardNum: `${transaction.cardNum}`,
                   expDate: `${transaction.expDate}`,
                   message: `${transaction.message}`
@@ -59,8 +63,8 @@ export class TransactionService {
               })
               .subscribe(
                 ({data}: any) =>  { 
-                  if(data.transaction.response_type == "Error"){ 
-                    return reject(data.transaction.response ? data.transaction.response : "No access token returned");
+                  if(data.transaction.response_type != "Success"){ 
+                    return reject(data.transaction.response ? data.transaction.response : "Error cannot process your transaction at this moment");
                   }
                   
                   console.log(data);
@@ -74,8 +78,40 @@ export class TransactionService {
       })
   }
 
-  cancelTransaction(transactionId: string){
-    //check if auithed user is same as user trying to cancel order kinda redundant, but will find a good solution
+  cancelTransaction(transactionId: number){
+    //checks if auithed user is same as user trying to cancel order kinda redundant, but will find a good solution
+    const cancelTransactionRef = gql(`
+                                      mutation cancelTransaction($transactionId: Int!){
+                                        cancelTransaction(transactionId: $transactionId){
+                                          response_type,
+                                          response,
+                                        }
+                                      }
+                                    `);
+
+    return new Promise((resolve, reject) => {
+            this.apollo
+              .mutate({
+                mutation: cancelTransactionRef,
+                variables: {
+                  transactionId: transactionId
+                }
+              })
+              .subscribe(
+                ({data}: any) =>  {
+                  if(data.cancelTransaction.response_type != "Success"){ 
+                    return reject(data.cancelTransaction.response ? data.cancelTransaction.response : "Error cannot cancel your transaction at this moment");
+                  }
+
+                  console.log(data);
+                  return resolve("Transaction successfully canceled");
+                },
+                (err) => {
+                  console.log(err);
+                  return reject(err);
+                }
+              )
+    })
   }
 
 

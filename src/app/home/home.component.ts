@@ -40,10 +40,11 @@ export class HomeComponent implements OnInit {
         country: form[10].value,
       },
       username: this.authService.getAuthStatus().username,
+      amount: parseInt(form[11].value),
       cardNum: form[2].value,
       expDate: form[3].value,
       ccv: form[4].value,
-      message: form[11].value,
+      message: form[12].value,
     };
 
     this.transactionService.submitTransaction(transactionInfo);

@@ -10,6 +10,7 @@ export interface TransactionInfo {
         country: string
     }
     username: string,
+    amount: number,
     cardNum: string,
     expDate: string,
     ccv: string,

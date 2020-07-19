@@ -9,6 +9,7 @@ import { TransactionService } from '../transaction.service';
   styleUrls: ['./transactions.component.css']
 })
 export class TransactionsComponent implements OnInit {
+  public thisInstance: any = this;
   public transactionViewIndex: number = 0;
   public transactions: Array<TransactionView>;
   public transactionViewData: TransactionView;
@@ -17,6 +18,7 @@ export class TransactionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.transactionService.getTransactions()
+    .valueChanges
     .subscribe(
       ({data}: any) =>  { 
         this.transactions = data.getTransactions;

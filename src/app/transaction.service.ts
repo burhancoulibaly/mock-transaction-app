@@ -26,9 +26,10 @@ export class TransactionService {
                     message
                   }
                 }
-              `)
+              `),
+              notifyOnNetworkStatusChange: true,
+              fetchPolicy: "network-only"
             })
-            .valueChanges;
   }
 
   submitTransaction(transaction: TransactionInfo){
@@ -68,7 +69,9 @@ export class TransactionService {
                   }
                   
                   console.log(data);
-                  return resolve("Transaction completed successfully");
+                  resolve("Transaction completed successfully");
+                  this.refetchTransactions();
+                  return;
                 },
                 (err) => {
                   console.log(err);
@@ -104,7 +107,9 @@ export class TransactionService {
                   }
 
                   console.log(data);
-                  return resolve("Transaction successfully canceled");
+                  resolve("Transaction successfully canceled");
+                  this.refetchTransactions();
+                  return;
                 },
                 (err) => {
                   console.log(err);
@@ -114,5 +119,8 @@ export class TransactionService {
     })
   }
 
-
+  refetchTransactions(){
+    //This works because it updates the cached store which triggers the valueChanges function on the get Transactions gql ref.
+    this.getTransactions().refetch();
+  }
 }

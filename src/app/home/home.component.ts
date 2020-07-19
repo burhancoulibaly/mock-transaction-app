@@ -1,9 +1,10 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { AuthService } from '../auth.service';
 import { ModalService } from '../modal.service';
 import { Router } from '@angular/router';
 import { TransactionInfo } from '../transaction-info';
 import { TransactionService } from '../transaction.service';
+import { TransactionsComponent } from '../transactions/transactions.component';
 
 @Component({
   selector: 'app-home',
@@ -48,7 +49,6 @@ export class HomeComponent implements OnInit {
     };
 
     this.transactionService.submitTransaction(transactionInfo);
-
     this.modalService.close('transaction-modal');
   }
 }

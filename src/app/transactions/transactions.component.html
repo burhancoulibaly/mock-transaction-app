@@ -1,5 +1,5 @@
 <div class="container transactions">
-    <section *ngFor="let transaction of transactions | slice:transactionViewIndex:transactionViewIndex + 4; let ind=index" (click)="openModal('transaction-view-modal', ind)">
+    <section *ngFor="let transaction of transactions let ind=index" (click)="openModal('transaction-view-modal', ind)">
         <div class="payment-info">
             <h3 class="username text-center">{{transaction.username}}</h3>
             <h1 class="amount text-center">${{transaction.amount}}</h1>

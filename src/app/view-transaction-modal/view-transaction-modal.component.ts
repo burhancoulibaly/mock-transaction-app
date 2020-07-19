@@ -38,8 +38,9 @@ export class ViewTransactionModalComponent implements OnInit {
   }
 
   cancelTransaction(transaction: TransactionView){
-    this.modalService.close("transaction-view-modal")
     this.transactionService.cancelTransaction(transaction.transactionId);
+    
+    this.modalService.close("transaction-view-modal")
   }
   
 }

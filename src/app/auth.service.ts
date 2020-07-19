@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private authStatus: any;
-  public authChange: Subject<boolean> = new Subject<boolean>();
+  public authChange: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private apollo: Apollo, private http: HttpClient) {}
 
@@ -40,7 +40,7 @@ export class AuthService {
                     
                     return reject(data.login.response ? data.login.response : "No access token returned");
                   }
-                  
+
                   this.authStatus = { isLoggedIn: true, email: data.login.email, username: data.login.username, token: data.login.accessToken };
                   this.authChanged(); 
                   return resolve("Login Successfull");
@@ -54,6 +54,7 @@ export class AuthService {
 
   authChanged(){
     this.authChange.next(this.authStatus ? this.authStatus.isLoggedIn : false);
+    return; 
   }
 
   signUp(username: String, f_name: String, l_name: String, email: String, password: String){
@@ -106,10 +107,9 @@ export class AuthService {
     return new Promise(async (resolve, reject) => {
       try {
         this.authStatus = null;
-        // console.log(this.authStatus.token);
-        this.deleteRefreshToken();
-        this.authChanged();
+        await this.deleteRefreshToken();
         await this.apollo.getClient().clearStore();//If queries are cached I have to know when a token is expired to refresh it and when refresh token expires.
+        this.authChanged();
       } catch (error) {
         return error;
       }

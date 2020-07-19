@@ -9,7 +9,7 @@ import { Router, NavigationEnd } from '@angular/router';
   styleUrls: ['./top-nav.component.css']
 })
 export class TopNavComponent implements OnInit {
-  public isAuthed: boolean;
+  public isAuthed: boolean = false;
   public href: string = "";
 
   constructor( private authService: AuthService, private modalService: ModalService, private router: Router){
@@ -22,7 +22,7 @@ export class TopNavComponent implements OnInit {
     this.authService.authChange
       .subscribe((val) => {
         this.isAuthed = val;
-        console.log(this.isAuthed);
+        console.log("is authed ?",this.isAuthed);
       })
   };
 
@@ -85,5 +85,3 @@ export class TopNavComponent implements OnInit {
     this.modalService.close(id);
   }
 }
-
-//username: String, f_name: String, l_name: String, email: String, password: String

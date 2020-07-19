@@ -1,13 +1,13 @@
-form#signup{
+form#signupForm{
     margin-top: 2rem;
 }
-form#signup .name, form#signup .password{
+form#signupForm .name, form#signupForm .password{
     display: flex;
     justify-content: space-between;
 }
-form#signup .name > .form-group, form#signup .password > .form-group{
+form#signupForm .name > .form-group, form#signupForm .password > .form-group{
     width: 49%;
 }
-form#signup button{
+form#signupForm button{
     margin-top: 1rem;
 }

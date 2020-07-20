@@ -6,6 +6,7 @@ const Entity = require("../entity");
 const typeDefs = `
     extend type Query {
         getTransactions: [TransactionInfo!]
+        getUserTransactions(username: String!): [TransactionInfo!]
     }
     extend type Mutation {
         transaction(f_name: String!, l_name: String!, address: String!, addressLine2: String!, city: String!, state: String!, zip: String!, country: String!, username: String!, amount: Int!, cardNum: String!, expDate: String!, message: String!): Response!
@@ -21,6 +22,7 @@ const typeDefs = `
         lastFourCardNum: String!
         transactionDate: String!
         message: String!
+        is_canceled: String!
     }
 `;
 
@@ -54,7 +56,44 @@ const resolvers = {
                         amount: allTransactions[i].amount,
                         lastFourCardNum: lastFourCardNum,
                         transactionDate: allTransactions[i].transaction_date.toString(),
-                        message: allTransactions[i].message.toString()
+                        message: allTransactions[i].message.toString(),
+                        is_canceled: allTransactions[i].is_canceled.toString(),
+                    });
+                }
+
+                return transactions;
+            } catch (error) {
+                throw error;
+            }
+        },
+        getUserTransactions: async(_, {username}, {res}) => {
+            let billingInfoEntity = new Entity("billing_info");
+            let paymentInfoEntity = new Entity("payment_info");
+            let transactionEntity = new Entity("transactions");
+
+            //Find better way to make this call maybe using joins (would need a triple join) or something else
+            try {
+                let allBillingInfo = await billingInfoEntity.getAll();
+                let allPaymentInfo = await paymentInfoEntity.getAll();
+                let allTransactions = await transactionEntity.getAll("user_name", `"${username}"`);
+                let transactions = [];
+
+                
+
+                for(let i = 0; i < allTransactions.length; i++){
+                    let cardNum = allPaymentInfo[i].card_num.toString().replace(/[ \x00-\x1F\x7F-\x9F]/g,"");
+                    let lastFourCardNum = cardNum.slice(cardNum.length-4, cardNum.length);
+
+                    transactions.push({
+                        transactionId: allTransactions[i].transaction_id,
+                        f_name: allBillingInfo[i].f_name.toString(),
+                        l_name: allBillingInfo[i].l_name.toString(),
+                        username: allTransactions[i].user_name.toString(),
+                        amount: allTransactions[i].amount,
+                        lastFourCardNum: lastFourCardNum,
+                        transactionDate: allTransactions[i].transaction_date.toString(),
+                        message: allTransactions[i].message.toString(),
+                        is_canceled: allTransactions[i].is_canceled.toString(),
                     });
                 }
 
@@ -120,7 +159,7 @@ const resolvers = {
                     response: `${req.payload.error[1].replace(" ","")}`
                 }
             }
-            
+
             let transactionEntity = new Entity("transactions");
 
             try {

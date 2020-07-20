@@ -1,3 +1,24 @@
+<section *ngIf="userInfo" id="user-info">
+    <div class="name text-center">
+        <h1>{{userInfo.f_name}} {{userInfo.l_name}}</h1>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <h2>Username: {{userInfo.username}}</h2>
+    <h2>Email: {{userInfo.email}}</h2>
+</section>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<h1 class="text-center">Transactions</h1>
+<br>
+<br>
+<br>
 <div class="container transactions">
     <section [ngClass]="{'canceled': transaction.is_canceled == '1'}" *ngFor="let transaction of transactions | slice:transactionViewIndex: transactionViewIndex + 4; let ind=index" (click)="openModal('transaction-view-modal', ind+transactionViewIndex)">
         <div class="payment-info">
@@ -9,13 +30,14 @@
         </div>
     </section>
     <div *ngIf="transactions.length > 0" class="pagination">
+        <!-- disable link -->
         <a type="button" [ngClass]="{'prev-limit': transactionViewIndex == 0}" href="" (click)="prev()">Prev</a>
         <div class="page-num">
             <a type="button" [ngClass]="{'active': transactionViewIndex == (pagination * 4) - 4}" href="" (click)="switch($event)" *ngFor="let pagination of getPaginations(transactions.length/4)">{{pagination}}</a>
         </div>
-        <a type="button" [ngClass]="{'next-limit': transactionViewIndex == (getPaginations(transactions.length/4).length * 4) - 4}" href="" (click)="next()">Next</a>
+        <a type="button" [ngClass]="{'next-limit': transactionViewIndex > transactions.length/4 + 1}" href="" (click)="next()">Next</a>
     </div>
 </div>
 <modal id="transaction-view-modal">
-    <view-transaction-modal [transactionView]="transactionViewData"></view-transaction-modal>
+    <view-transaction-modal (transactionCanceled)="cancelTransaction($event)" [transactionView]="transactionViewData"></view-transaction-modal>
 </modal>

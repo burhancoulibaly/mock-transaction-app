@@ -23,12 +23,36 @@ export class TransactionService {
                     amount,
                     lastFourCardNum,
                     transactionDate,
-                    message
+                    message,
+                    is_canceled
                   }
                 }
               `),
               notifyOnNetworkStatusChange: true,
-              fetchPolicy: "network-only"
+              // fetchPolicy: "network-only"
+            })
+  }
+
+  getUserTransactions(username){//check error this will return if token and refresh token expire
+    return this.apollo
+            .watchQuery({
+              query: gql(`
+                {
+                  getUserTransactions(username: "${username}") {
+                    transactionId,
+                    f_name,
+                    l_name,
+                    username,
+                    amount,
+                    lastFourCardNum,
+                    transactionDate,
+                    message,
+                    is_canceled
+                  }
+                }
+              `),
+              notifyOnNetworkStatusChange: true,
+              // fetchPolicy: "network-only"
             })
   }
 

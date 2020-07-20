@@ -10,6 +10,7 @@ import { ModalService } from '../modal.service';
   styleUrls: ['./view-transaction-modal.component.css']
 })
 export class ViewTransactionModalComponent implements OnInit {
+  @Output() transactionCanceled: EventEmitter<TransactionView> = new EventEmitter<TransactionView>();
   @Input() transactionView: TransactionView;
 
   constructor(private authService: AuthService, private transactionService: TransactionService, private modalService: ModalService) { }
@@ -18,7 +19,11 @@ export class ViewTransactionModalComponent implements OnInit {
   }
 
   getUsername(){
-    return this.authService.getAuthStatus().username;
+    if(this.authService.getAuthStatus()){
+      return this.authService.getAuthStatus().username
+    }
+
+    return;
   }
 
   //Checks transaction can be canceled (if it has been 14 days since the original transaction)
@@ -39,7 +44,7 @@ export class ViewTransactionModalComponent implements OnInit {
 
   cancelTransaction(transaction: TransactionView){
     this.transactionService.cancelTransaction(transaction.transactionId);
-    
+    this.transactionCanceled.emit(transaction);
     this.modalService.close("transaction-view-modal")
   }
   

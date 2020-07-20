@@ -17,7 +17,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
 import { CookieService } from 'ngx-cookie-service';
 import { LoginModalComponent } from './login-modal/login-modal.component';
-import { SignUpModalComponent } from './sign-up-modal/sign-up-modal.component'
+import { SignUpModalComponent } from './sign-up-modal/sign-up-modal.component';
+import { AccountComponent } from './account/account.component'
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { SignUpModalComponent } from './sign-up-modal/sign-up-modal.component'
     SignUpComponent,
     TransactionModalComponent,
     LoginModalComponent,
-    SignUpModalComponent
+    SignUpModalComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,

@@ -10,6 +10,7 @@ import { Router, NavigationEnd } from '@angular/router';
 })
 export class TopNavComponent implements OnInit {
   public isAuthed: boolean = false;
+  public userAuth: any;
   public href: string = "";
 
   constructor( private authService: AuthService, private modalService: ModalService, private router: Router){
@@ -22,6 +23,7 @@ export class TopNavComponent implements OnInit {
     this.authService.authChange
       .subscribe((val) => {
         this.isAuthed = val;
+        this.userAuth = this.authService.getAuthStatus();
         console.log("is authed ?",this.isAuthed);
       })
   };
@@ -39,6 +41,7 @@ export class TopNavComponent implements OnInit {
         console.log(error);
         return false;
       })
+    return false;
   }
 
   login(form){

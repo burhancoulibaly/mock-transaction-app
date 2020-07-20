@@ -6,5 +6,6 @@ export interface TransactionView {
     amount: number,
     message: string,
     transactionDate: string,
-    username: string
+    username: string,
+    is_canceled: string
 }

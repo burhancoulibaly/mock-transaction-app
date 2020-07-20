@@ -11,7 +11,7 @@ import { TransactionService } from '../transaction.service';
 export class TransactionsComponent implements OnInit {
   public thisInstance: any = this;
   public transactionViewIndex: number = 0;
-  public transactions: Array<TransactionView>;
+  public transactions: Array<TransactionView> = [];
   public transactionViewData: TransactionView;
 
   constructor(private modalService: ModalService, private transactionService: TransactionService) { }
@@ -30,6 +30,33 @@ export class TransactionsComponent implements OnInit {
     )
   }
 
+  getPaginations(num){
+    let paginations: Array<number> = [];
+
+    for(let i = 0; i < Math.ceil(num); i++){
+      paginations.push(i+1);
+    }
+    
+    return paginations;
+  }
+
+  prev(){
+    this.transactionViewIndex -= 4;
+    return false;
+  }
+
+  switch(event){
+    let pageNum = event.target.innerText;
+
+    this.transactionViewIndex = (4 * pageNum) - 4;
+    return false;
+  }
+
+  next(){
+    this.transactionViewIndex += 4;
+    return false;
+  }
+
   openModal(id: string, ind: number){
     this.transactionViewData = {
       transactionId: this.transactions[ind].transactionId,
@@ -40,6 +67,7 @@ export class TransactionsComponent implements OnInit {
       message: this.transactions[ind].message,
       transactionDate: this.transactions[ind].transactionDate,
       username: this.transactions[ind].username,
+      is_canceled: this.transactions[ind].is_canceled
     };
 
 

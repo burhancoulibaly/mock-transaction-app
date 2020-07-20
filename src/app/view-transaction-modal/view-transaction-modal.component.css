@@ -8,3 +8,9 @@
     right: 0;
     margin: 1rem;
 }
+#transaction-view .canceled-trans-text{
+    position: absolute;
+    bottom: 3rem;
+    right: 0;
+    margin: 1rem;
+}

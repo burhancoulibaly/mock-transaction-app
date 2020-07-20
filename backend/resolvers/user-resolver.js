@@ -11,10 +11,18 @@ let login = new Entity("login");
 const typeDefs = `
     extend type Query {
         login(email: String!, password: String!): LoginResponse!
+        userInfo(username: String!): UserInfo!
     }
 
     extend type Mutation {
         register(username: String!, f_name: String!, l_name: String!, email: String!, password: String!): LoginResponse!
+    }
+
+    type UserInfo {
+        username: String!
+        f_name: String!
+        l_name: String!
+        email: String!
     }
 
     type LoginResponse {
@@ -70,6 +78,28 @@ const resolvers = {
                     username: ``,
                     accessToken: ``
                 }
+            }
+        },
+        userInfo: async(_, {username}, {req}) => {
+            if(!req.payload.authenticated){
+                req.payload.error = req.payload.error.toString().split(":");
+                 
+                throw new Error(req.payload.error);
+            }
+
+            let users = new Entity('users');
+
+            try {
+                let userInfo = await users.getRow("user_name", `"${username}"`);
+
+                return{
+                    username: userInfo[0].user_name.toString(),
+                    f_name: userInfo[0].f_name.toString(),
+                    l_name: userInfo[0].l_name.toString(),
+                    email: userInfo[0].email.toString()
+                }
+            } catch (error) {
+                throw error;
             }
         }
     },

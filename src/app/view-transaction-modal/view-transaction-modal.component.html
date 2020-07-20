@@ -7,8 +7,11 @@
     <h4>Message:</h4>
     <br>
     <p>{{transactionView.message}}</p>
+    <div *ngIf="transactionView.is_canceled == '1'" class="canceled-trans-text">
+        <p>This transaction has been canceled</p>
+    </div>
     <div *ngIf="transactionView.username == getUsername()">
-        <button [disabled]="canCancel() != true" (click)="cancelTransaction(transactionView)" class="btn btn-primary cancel-trans">Cancel Transaction</button>
+        <button [disabled]="canCancel() != true || transactionView.is_canceled == '1'" (click)="cancelTransaction(transactionView)" class="btn btn-primary cancel-trans">Cancel Transaction</button>
     </div>
 </section>
 

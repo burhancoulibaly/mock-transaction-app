@@ -122,6 +122,24 @@ export class AuthService {
     return this.authStatus;
   }
 
+  userInfo(username){
+    return this.apollo
+            .watchQuery({
+              query: gql(`
+                {
+                  userInfo(username: "${username}") {
+                    username,
+                    f_name,
+                    l_name,
+                    email
+                  }
+                }
+              `),
+              notifyOnNetworkStatusChange: true,
+              // fetchPolicy: "network-only" test to see if this still updates properly
+            })
+  }
+
   refreshToken(){
     return new Promise((resolve, reject) => {
       this.http.get<any>(`http://localhost:3000/refreshToken`)

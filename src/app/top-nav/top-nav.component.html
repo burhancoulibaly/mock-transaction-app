@@ -7,7 +7,16 @@
     <div class="auth">
         <button *ngIf="!isAuthed && !href.includes('login') && !href.includes('signup')" href="" (click)="openModal('login-modal')"><h1>Login</h1></button>
         <button *ngIf="!isAuthed && !href.includes('login') && !href.includes('signup')" href="" (click)="openModal('sign-up-modal')"><h1>Sign Up</h1></button>
-        <button *ngIf="isAuthed && !href.includes('login') && !href.includes('signup')" href="" (click)="logout()"><h1>Logout</h1></button>
+        <!-- <button href="" (click)="logout()"><h1>Logout</h1></button> -->
+        <div *ngIf="isAuthed && !href.includes('login') && !href.includes('signup')" class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle user-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{userAuth.username}}
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" routerLink="/account">My Account</a>
+                <a class="dropdown-item" href="" (click)="logout()">Logout</a>
+            </div>
+          </div>
     </div>
 </div>
 <modal id="login-modal">

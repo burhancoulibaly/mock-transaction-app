@@ -8,58 +8,58 @@
         <div class="name">
             <div class="form-group">
                 <label for="firstName">First Name</label>
-                <input type="name" class="form-control" id="firstName" placeholder="First Name">
+                <input (input)="onInput($event.target)" type="name" class="form-control" id="firstName" placeholder="First Name" required>
             </div>
             <div class="form-group">
                 <label for="lastName">Last Name</label>
-                <input type="name" class="form-control" id="lastName" placeholder="Last Name">
+                <input (input)="onInput($event.target)" type="name" class="form-control" id="lastName" placeholder="Last Name" required>
             </div>
         </div>
 
         <div class="cardInfo">
             <div class="form-group">
                 <label for="cardNum">Card Number</label>
-                <input type="cardnumber" class="form-control cardNum" id="cardNum" placeholder="Enter Card Number">
+                <input (input)="onInput($event.target)" type="cardnumber" class="form-control cardNum" id="cardNum" placeholder="1111 1111 1111 1111" required>
             </div>
             <div class="form-group">
                 <label for="expDate">Expiration</label>
-                <input type="cardinfo" class="form-control expDate" id="expDate" placeholder="date">
+                <input (input)="onInput($event.target)" type="cardinfo" class="form-control expDate" id="expDate" placeholder="MM/DD/YYYY" required>
             </div>
             <div class="form-group">
-                <label for="ccv">CVV</label>
-                <input type="ccv" class="form-control ccv" id="cvv" placeholder="CVV">
+                <label for="ccv">CCV</label>
+                <input (input)="onInput($event.target)" type="ccv" class="form-control ccv" id="ccv" placeholder="CCV" required>
             </div>
         </div>
 
         <div class="address">
             <div class="form-group">
                 <label for="billingAddress">Address</label>
-                <input type="address" class="form-control" id="billingAddress" placeholder="Address">
+                <input (input)="onInput($event.target)" type="address" class="form-control" id="billingAddress" placeholder="Address" required>
             </div>
             <div class="form-group">
                 <label for="billingAddressLine2">Address Line 2</label>
-                <input type="address" class="form-control" id="billingAddressLine2" placeholder="Address line 2">
+                <input (input)="onInput($event.target)" type="address" value="" class="form-control" id="billingAddressLine2" placeholder="Address line 2">
             </div>
         </div>
 
         <div class="city-state-zip-ctry">
             <div class="form-group">
                 <label for="city">City</label>
-                <input type="city" class="form-control" id="city" placeholder="City">
+                <input (input)="onInput($event.target)" type="city" class="form-control" id="city" placeholder="City" required>
             </div>
             <div class="form-group">
                 <label for="state">State</label>
-                <select type="zip" name="state" class="form-control" id="state" placeholder="State">
+                <select type="state" name="state" class="form-control" id="state" placeholder="State" required>
                     <option value="NY" selected="selected">New York</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="zip">ZIP</label>
-                <input type="zip" class="form-control" id="zip" placeholder="ZIP">
+                <input (input)="onInput($event.target)" type="zip" class="form-control" id="zip" placeholder="12345" required>
             </div>
             <div class="form-group">
                 <label for="country">Country</label>
-                <select type="zip" name="country" class="form-control" id="country" placeholder="Country">
+                <select type="country" name="country" class="form-control" id="country" placeholder="Country" required>
                     <option value="United States of Random" selected="selected">United States of Random</option>
                 </select>
             </div>
@@ -68,8 +68,8 @@
     
     <div class="tab">
         <div class="form-group">
-            <label for="amount">Amount</label>
-            <input type="money" class="form-control" id="amount" placeholder="Enter Amount">
+            <label for="amount">Amount($)</label>
+            <input (input)="onInput($event.target)" type="money" class="form-control" id="amount" placeholder="Enter Amount($)" required>
         </div>
 
         <div class="form-group">
@@ -80,7 +80,7 @@
     
     <div style="overflow:auto;">
       <div style="float:left;">
-        <button [disabled]="currentTab == 0" type="button" class="btn btn-primary" id="prevBtn" (click)="nextPrev(-1, $event)">Previous</button>
+        <button [disabled]="currentTab == 0 || isDisabled == true" type="button" class="btn btn-primary" id="prevBtn" (click)="nextPrev(-1, $event)">Previous</button>
         <button type="button" class="btn btn-primary" id="nextBtn" (click)="nextPrev(1, $event)">Next</button>
       </div>
     </div>

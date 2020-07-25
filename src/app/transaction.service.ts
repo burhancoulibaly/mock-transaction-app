@@ -58,7 +58,7 @@ export class TransactionService {
 
   submitTransaction(transaction: TransactionInfo){
     const transactionRef = gql(`
-                                mutation transaction($f_name: String!, $l_name: String!, $address: String!, $addressLine2: String!, $city: String!, $state: String!, $zip: String!, $country: String!, $username: String!, $amount: Int!, $cardNum: String!, $expDate: String!, $message: String!){
+                                mutation transaction($f_name: String!, $l_name: String!, $address: String!, $addressLine2: String!, $city: String!, $state: String!, $zip: String!, $country: String!, $username: String!, $amount: Float!, $cardNum: String!, $expDate: String!, $message: String!){
                                   transaction(f_name: $f_name, l_name: $l_name, address: $address, addressLine2: $addressLine2, city: $city, state: $state, zip: $zip, country: $country, username: $username, amount: $amount, cardNum: $cardNum, expDate: $expDate, message: $message){
                                     response_type,
                                     response,

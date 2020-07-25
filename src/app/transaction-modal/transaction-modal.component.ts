@@ -1,4 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormValidationService } from '../form-validation.service';
+import { element } from 'protractor';
 
 @Component({
   selector: 'transaction-modal',
@@ -7,9 +9,10 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class TransactionModalComponent implements OnInit {
   public currentTab = 0;
+  public isDisabled = false;
   @Output() submit: EventEmitter<any> = new EventEmitter();
 
-  constructor() { }
+  constructor(private formValidationService: FormValidationService) { }
 
   ngOnInit(): void {
     this.showTab(this.currentTab);
@@ -58,7 +61,7 @@ export class TransactionModalComponent implements OnInit {
     // A loop that checks every input field in the current tab:
     for (i = 0; i < inputs.length; i++) {
       // If a field is empty...
-      if (inputs[i].value == "") {
+      if (inputs[i].value == "" && inputs[i].id != "billingAddressLine2") {
         // add an "invalid" class to the field:
         inputs[i].className += " invalid";
         // and set the current valid status to false:
@@ -80,6 +83,151 @@ export class TransactionModalComponent implements OnInit {
     }
     //... and adds the "active" class to the current step:
     steps[num].className += " active";
+  }
+  
+  onInput(target){
+    switch(target.id){
+      case "firstName": {
+        let elementRef = target;
+        let isValid = this.formValidationService.charValidation(target.value);
+        
+        elementRef.classList.remove("invalid");
+        this.isDisabled = false;
+        
+        if(!isValid){
+          elementRef.classList.add("invalid");
+          this.isDisabled = true;
+
+        }
+
+        break;
+      }
+      case "lastName": {
+        let elementRef = target;
+        let isValid = this.formValidationService.charValidation(target.value);
+        
+        elementRef.classList.remove("invalid");
+        this.isDisabled = false;
+        
+        if(!isValid){
+          elementRef.classList.add("invalid");
+          this.isDisabled = true;
+        }
+
+        break;
+      }
+      case "cardNum": {
+        let elementRef = target;
+        let isValid = this.formValidationService.cardNumValidation(target.value);
+        
+        elementRef.classList.remove("invalid");
+        this.isDisabled = false;
+        
+        if(!isValid){
+          elementRef.classList.add("invalid");
+          this.isDisabled = true;
+        }
+
+        break;
+      }
+      case "expDate": {
+        let elementRef = target;
+        let isValid = this.formValidationService.dateValidation(target.value);
+        
+        elementRef.classList.remove("invalid");
+        this.isDisabled = false;
+        
+        if(!isValid){
+          elementRef.classList.add("invalid");
+          this.isDisabled = true;
+        }
+
+        break;
+      }
+      case "ccv": {
+        let elementRef = target;
+        let isValid = this.formValidationService.ccvValidation(target.value);
+        
+        elementRef.classList.remove("invalid");
+        this.isDisabled = false;
+        
+        if(!isValid){
+          elementRef.classList.add("invalid");
+          this.isDisabled = true;
+        }
+
+        break;
+      }
+      case "billingAddress": {
+        let elementRef = target;
+        let isValid = this.formValidationService.addressValidation(target.value);
+        
+        elementRef.classList.remove("invalid");
+        this.isDisabled = false;
+        
+        if(!isValid){
+          elementRef.classList.add("invalid");
+          this.isDisabled = true;
+        }
+
+        break;
+      }
+      case "billingAddressLine2": {
+        let elementRef = target;
+        let isValid = this.formValidationService.addressValidation(target.value);
+        
+        elementRef.classList.remove("invalid");
+        this.isDisabled = false;
+        
+        if(!isValid){
+          elementRef.classList.add("invalid");
+          this.isDisabled = true;
+        }
+
+        break;
+      }
+      case "city": {
+        let elementRef = target;
+        let isValid = this.formValidationService.charValidation(target.value);
+        
+        elementRef.classList.remove("invalid");
+        this.isDisabled = false;
+        
+        if(!isValid){
+          elementRef.classList.add("invalid");
+          this.isDisabled = true;
+        }
+
+        break;
+      }
+      case "zip": {
+        let elementRef = target;
+        let isValid = this.formValidationService.zipValidation(target.value);
+        
+        elementRef.classList.remove("invalid");
+        this.isDisabled = false;
+        
+        if(!isValid){
+          elementRef.classList.add("invalid");
+          this.isDisabled = true;
+        }
+
+        break;
+      }case "amount": {
+        let elementRef = target;
+        let isValid = this.formValidationService.numValidation(target.value);
+        
+        elementRef.classList.remove("invalid");
+        this.isDisabled = false;
+        
+        if(!isValid){
+          elementRef.classList.add("invalid");
+          this.isDisabled = true;
+        }
+
+        break;
+      }
+    }
   }
 
   onSubmit(event){

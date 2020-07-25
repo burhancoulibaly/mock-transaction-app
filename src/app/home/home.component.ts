@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { TransactionInfo } from '../transaction-info';
 import { TransactionService } from '../transaction.service';
 import { TransactionsComponent } from '../transactions/transactions.component';
+import { FormValidationService } from '../form-validation.service';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ import { TransactionsComponent } from '../transactions/transactions.component';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  constructor(private authService: AuthService, private modalService: ModalService, private router: Router, private transactionService: TransactionService) {}
+  constructor(private authService: AuthService, private modalService: ModalService, private router: Router, private transactionService: TransactionService, private formValidationService: FormValidationService) {}
 
   ngOnInit(): void {
     
@@ -41,11 +42,11 @@ export class HomeComponent implements OnInit {
         country: form[10].value,
       },
       username: this.authService.getAuthStatus().username,
-      amount: parseInt(form[11].value),
+      amount: parseFloat(form[11].value),
       cardNum: form[2].value,
       expDate: form[3].value,
       ccv: form[4].value,
-      message: form[12].value,
+      message: this.formValidationService.encodeHTML(form[12].value),
     };
 
     this.transactionService.submitTransaction(transactionInfo);

@@ -4,4 +4,8 @@ form#loginForm{
 form#loginForm button{
     margin-top: 1rem;
 }
-
+form#loginForm .form-control.invalid:focus{
+    background-color: pink;
+    border-color: red;
+    box-shadow: 0 0 0 0.2rem red;
+}

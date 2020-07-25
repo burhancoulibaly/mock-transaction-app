@@ -9,7 +9,7 @@ const typeDefs = `
         getUserTransactions(username: String!): [TransactionInfo!]
     }
     extend type Mutation {
-        transaction(f_name: String!, l_name: String!, address: String!, addressLine2: String!, city: String!, state: String!, zip: String!, country: String!, username: String!, amount: Int!, cardNum: String!, expDate: String!, message: String!): Response!
+        transaction(f_name: String!, l_name: String!, address: String!, addressLine2: String!, city: String!, state: String!, zip: String!, country: String!, username: String!, amount: Float!, cardNum: String!, expDate: String!, message: String!): Response!
         cancelTransaction(transactionId: Int!): Response!
     }
 
@@ -18,7 +18,7 @@ const typeDefs = `
         f_name: String!
         l_name: String!
         username: String!
-        amount: Int!
+        amount: Float!
         lastFourCardNum: String!
         transactionDate: String!
         message: String!
@@ -119,7 +119,7 @@ const resolvers = {
             let paymentInfoEntity = new Entity("payment_info");
             let transactionEntity = new Entity("transactions");
 
-            expDate = `${expDate.split("/")[2]}-${expDate.split("/")[1]}-${expDate.split("/")[0]}`;
+            expDate = `${expDate.split("/")[2]}-${expDate.split("/")[0]}-${expDate.split("/")[1]}`;
 
             let today = new Date(); 
             let fullDate = formatDateTime(today);

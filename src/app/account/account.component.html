@@ -35,7 +35,7 @@
         <div class="page-num">
             <a type="button" [ngClass]="{'active': transactionViewIndex == (pagination * 4) - 4}" href="" (click)="switch($event)" *ngFor="let pagination of getPaginations(transactions.length/4)">{{pagination}}</a>
         </div>
-        <a type="button" [ngClass]="{'next-limit': transactionViewIndex > transactions.length/4 + 1}" href="" (click)="next()">Next</a>
+        <a type="button" [ngClass]="{'next-limit': transactionViewIndex == (getPaginations(transactions.length/4).length * 4) - 4}" href="" (click)="next()">Next</a>
     </div>
 </div>
 <modal id="transaction-view-modal">

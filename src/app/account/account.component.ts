@@ -19,6 +19,10 @@ export class AccountComponent implements OnInit {
   public transactionViewData: TransactionView;
 
   constructor(private authService: AuthService, private transactionService: TransactionService, private modalService: ModalService) { 
+
+  }
+
+  ngOnInit(): void {
     this.authService.authChange
       .subscribe((val) => {
         this.isAuthed = val;
@@ -27,10 +31,6 @@ export class AccountComponent implements OnInit {
           this.getUserInfo(this.authService.getAuthStatus().username);
         }
       })
-  }
-
-  ngOnInit(): void {
-  
   }
 
   getUserTransactions(username){

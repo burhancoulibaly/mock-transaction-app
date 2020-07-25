@@ -3,31 +3,31 @@
     <div class="name">
         <div class="form-group">
             <label for="firstName">First Name</label>
-            <input type="name" class="form-control" id="firstName" placeholder="Enter First Name">
+            <input (input)="onInput($event.target)" type="name" class="form-control" id="firstName" placeholder="Enter First Name">
         </div>
         <div class="form-group">
             <label for="lastName">Last Name</label>
-            <input type="name" class="form-control" id="lastName" placeholder="Enter Last Name">
+            <input (input)="onInput($event.target)" type="name" class="form-control" id="lastName" placeholder="Enter Last Name">
         </div>
     </div>
     <div class="form-group">
-      <label for="usernameForm">Username address</label>
-      <input type="username" class="form-control" id="usernameForm" placeholder="Enter Username">
+      <label for="username">Username address</label>
+      <input (input)="onInput($event.target)" type="username" class="form-control" id="username" placeholder="Enter Username">
     </div>
     <div class="form-group">
-        <label for="signupEmail1">Email address</label>
-        <input type="email" class="form-control" id="signupEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+        <label for="signupEmail">Email address</label>
+        <input (input)="onInput($event.target)" type="email" class="form-control" id="signupEmail" aria-describedby="emailHelp" placeholder="Enter email">
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
     <div class="password">
         <div class="form-group">
             <label for="signupPassword">Password</label>
-            <input type="password" class="form-control" id="signupPassword" placeholder="Password">
+            <input (input)="onInput($event.target)" type="password" class="form-control" id="signupPassword" placeholder="Password">
         </div>
         <div class="form-group">
             <label for="confirmPassword">Password</label>
-            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm">
+            <input (input)="onInput($event.target)" type="password" class="form-control" id="confirmPassword" placeholder="Confirm">
         </div>
     </div>
-    <button type="button" (click)="onSubmit($event)" class="btn btn-primary">Submit</button>
+    <button type="button" [disabled]="isDisabled" (click)="onSubmit($event)" class="btn btn-primary">Submit</button>
 </form>

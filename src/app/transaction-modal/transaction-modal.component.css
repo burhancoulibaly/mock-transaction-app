@@ -62,6 +62,10 @@ form#transactionForm .step.active {
 /* Mark the steps that are finished and valid: */
 form#transactionForm .step.finish {
     background-color: #4CAF50;
-} 
+}
+form#transactionForm .form-control.invalid:focus{
+    border-color: red;
+    box-shadow: 0 0 0 0.2rem red;
+}
 
 

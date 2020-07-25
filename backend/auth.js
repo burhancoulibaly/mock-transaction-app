@@ -82,7 +82,6 @@ const refreshToken = function(refreshToken, response){
     })
 }
 
-//Test this at some point
 const revokeTokens = function(email){
     return new Promise(async(resolve, reject) => {
         let login = new Entity("login");
